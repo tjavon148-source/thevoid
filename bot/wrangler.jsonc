@@ -1,0 +1,17 @@
+{
+  "name": "void-bot",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-01",
+  "kv_namespaces": [{ "binding": "AGREEMENTS" }],
+  "vars": {
+    "GUILD_ID": "",
+    "ADMIN_USER_ID": "",
+    "AGREED_ROLE_ID": "",
+    "BUYER_ROLE_ID": "",
+    "GET_IT_CHANNEL_ID": "",
+    "DISCORD_PUBLIC_KEY": "",
+    "PAYMENT_LINK_URL": "https://whop.com/the-void-619c/the-void-b1/",
+    "PRICE_LABEL": "$15",
+    "AGREEMENT_VERSION": "2026-11-23"
+  }
+}
