@@ -94,6 +94,8 @@ void main(){
   function initGL(){
     try{gl=canvas.getContext("webgl",{antialias:false,alpha:false,powerPreference:"high-performance"})||canvas.getContext("experimental-webgl")}catch(e){gl=null}
     if(!gl)return false;
+    // Software-rendered WebGL (no GPU) would freeze the page, so use the drawn-ring fallback there.
+    try{const x=gl.getExtension("WEBGL_debug_renderer_info");if(x&&/swiftshader|llvmpipe|software/i.test(gl.getParameter(x.UNMASKED_RENDERER_WEBGL)))return false}catch(e){}
     const sh=(type,s)=>{const o=gl.createShader(type);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(o));return null}return o};
     const vs=sh(gl.VERTEX_SHADER,"attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }");
     const fs=sh(gl.FRAGMENT_SHADER,FS);
