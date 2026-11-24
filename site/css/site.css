@@ -33,6 +33,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:var(--nav);gap:16px}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:750;font-size:18px;letter-spacing:.01em;text-decoration:none}
 .brand svg{width:30px;height:30px}
+.nav .brand,.nav-links a{white-space:nowrap}
 .nav-links{display:flex;align-items:center;gap:6px;margin-left:auto}
 .nav-links a:not(.btn){padding:8px 12px;border-radius:8px;text-decoration:none;color:#d9cfd1;font-size:15px;font-weight:500}
 .nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:#fff}
