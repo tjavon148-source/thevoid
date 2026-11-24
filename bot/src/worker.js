@@ -2,7 +2,8 @@
 // so nothing has to stay running on a computer. Secret: DISCORD_TOKEN. Everything else is in wrangler.jsonc.
 const API = 'https://discord.com/api/v10';
 const FLAG_EPHEMERAL = 64;
-export const IDS = { agree: 'void:agree', payLink: 'void:paylink' };
+import { signKey, KINDS } from './license.js';
+export const IDS = { agree: 'void:agree', payLink: 'void:paylink', key: 'void:key' };
 
 const hex = (s) => Uint8Array.from(s.match(/../g).map((b) => parseInt(b, 16)));
 
@@ -23,6 +24,15 @@ async function roleCall(env, method, userId, roleId, reason, fetchFn) {
     method, headers: { authorization: `Bot ${env.DISCORD_TOKEN}`, 'x-audit-log-reason': encodeURIComponent(reason) },
   });
   if (!res.ok) throw new Error(`Discord said ${res.status}`);
+}
+
+async function keyReply(env, userId, kind, forOther = false) {
+  if (!env.SIGNING_KEY) return reply('Keys are not set up yet. Tell the owner.');
+  let key;
+  try { key = await signKey(env.SIGNING_KEY, userId, kind); }
+  catch (e) { return reply(e.message === 'bad-kind' ? `Kind must be one of: ${KINDS.join(', ')}.` : 'I could not make a key. Tell the owner.'); }
+  return reply([forOther ? `Key for <@${userId}> (${kind}):` : 'Your key (private, tied to your account):', '```', key, '```',
+    forOther ? 'Send it to them privately.' : 'Copy all of it. Paste it into The Void the first time you open it.'].join('\n'));
 }
 
 export function paymentUrl(base) { return new URL(base).toString(); }   // Whop links the buyer's Discord account itself
@@ -47,6 +57,10 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       return reply([`Checkout (${env.PRICE_LABEL}, one time):`, paymentUrl(env.PAYMENT_LINK_URL), '',
         'After you pay, press **Claim Access** on the Whop page and pick your Discord account. That gives you the Buyer role and unlocks the download. Stuck? Message the owner.'].join('\n'));
     }
+    if (i.data.custom_id === IDS.key) {
+      if (!roles.includes(env.BUYER_ROLE_ID)) return reply(`Keys are for Buyers. Get The Void in <#${env.GET_IT_CHANNEL_ID}>, then come back.`);
+      return keyReply(env, userId, 'buyer');
+    }
     return reply('That button is not active any more.');
   }
 
@@ -60,6 +74,18 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       try { await roleCall(env, add ? 'PUT' : 'DELETE', target, env.BUYER_ROLE_ID, add ? 'Manual grant' : 'Manual revoke', fetchFn); }
       catch (e) { return reply(`Could not change the role: ${e.message}`); }
       return reply(`${add ? 'Gave' : 'Removed'} the Buyer role ${add ? 'to' : 'from'} <@${target}>.`);
+    }
+    if (name === 'key') {
+      if (!isAdmin) return reply('Only the owner can run this.');
+      const target = i.data.options?.find((o) => o.name === 'user')?.value;
+      const kind = i.data.options?.find((o) => o.name === 'kind')?.value || 'gift';
+      if (!target) return reply('Missing user.');
+      return keyReply(env, target, kind, true);
+    }
+    if (name === 'keypanel') {
+      if (!isAdmin) return reply('Only the owner can run this.');
+      return { type: 4, data: { content: ['**Get your key**', 'Buyers: press the button for your personal key. The Void asks for it the first time you open it. It is tied to your Discord account, so keep it private.'].join('\n'),
+        components: [{ type: 1, components: [{ type: 2, style: 1, label: 'Get my key', custom_id: IDS.key }] }], allowed_mentions: { parse: [] } } };
     }
     return reply('Unknown command.');
   }

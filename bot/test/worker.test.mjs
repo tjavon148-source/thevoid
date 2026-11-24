@@ -47,3 +47,35 @@ test('signature check accepts a real signature and rejects tampering', async () 
   assert.deepEqual(await res.json(), { type: 1 });
   assert.equal((await worker.fetch(req('00'.repeat(64), ts), { ...env, DISCORD_PUBLIC_KEY: pub })).status, 401);
 });
+
+// ---- keys ----
+import { signKey } from '../src/license.js';
+const SEED = Buffer.alloc(32, 7).toString('base64');
+const kenv = { ...env, SIGNING_KEY: SEED };
+const slash = (name, options = [], uid = 'admin1') => ({ type: 2, member: { user: { id: uid }, roles: [] }, data: { name, options } });
+test('key button: buyers get a key, others are told where to buy, missing secret is explained', async () => {
+  const ok = (await handleInteraction(btn(IDS.key, ['r-buyer'], '555555555'), kenv)).data;
+  assert.equal(ok.flags, 64); assert.match(ok.content, /VOID1\.[\w-]+\.[\w-]+/);
+  assert.match((await handleInteraction(btn(IDS.key, ['r-agreed'], '555555555'), kenv)).data.content, /Keys are for Buyers/);
+  assert.match((await handleInteraction(btn(IDS.key, ['r-buyer'], '555555555'), env)).data.content, /not set up/);
+});
+test('keys are deterministic and carry the user id and kind', async () => {
+  const a = await signKey(SEED, '555555555', 'buyer'), b = await signKey(SEED, '555555555', 'buyer');
+  assert.equal(a, b);
+  assert.deepEqual(JSON.parse(Buffer.from(a.split('.')[1], 'base64url').toString()), { u: '555555555', k: 'buyer' });
+});
+test('signKey rejects bad input', async () => {
+  await assert.rejects(signKey(SEED, 'abc', 'buyer'), /bad-user/);
+  await assert.rejects(signKey(SEED, '555555555', 'vip'), /bad-kind/);
+  await assert.rejects(signKey('AAAA', '555555555', 'buyer'), /bad-signing-key/);
+});
+test('/key and /keypanel are owner only', async () => {
+  const u = [{ name: 'user', value: '777777777' }];
+  assert.match((await handleInteraction(slash('key', u, 'someone'), kenv)).data.content, /Only the owner/);
+  assert.match((await handleInteraction(slash('keypanel', [], 'someone'), kenv)).data.content, /Only the owner/);
+  const r = (await handleInteraction(slash('key', [...u, { name: 'kind', value: 'giveaway' }]), kenv)).data.content;
+  assert.match(r, /<@777777777> \(giveaway\)/); assert.match(r, /VOID1\./);
+  assert.match((await handleInteraction(slash('key', [...u, { name: 'kind', value: 'vip' }]), kenv)).data.content, /Kind must be/);
+  const p = (await handleInteraction(slash('keypanel'), kenv)).data;
+  assert.equal(p.components[0].components[0].custom_id, IDS.key); assert.equal(p.flags, undefined);
+});
