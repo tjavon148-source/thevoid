@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Void: the trading journal that lives on your chart</title>
+<meta name="description" content="A Chrome extension journal for TradingView. Import your Tradovate order CSVs, review your month at a glance, and keep private notes behind a PIN. $15 one time.">
+<link rel="canonical" href="https://gethevoid.com/">
+<meta name="theme-color" content="#050305">
+<meta property="og:type" content="website"><meta property="og:site_name" content="The Void">
+<meta property="og:title" content="The Void: the trading journal that lives on your chart"><meta property="og:description" content="A Chrome extension journal for TradingView. Import your Tradovate order CSVs, review your month at a glance, and keep private notes behind a PIN. $15 one time.">
+<meta property="og:url" content="https://gethevoid.com/"><meta property="og:image" content="https://gethevoid.com/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://gethevoid.com/og.png">
+
+<link rel="icon" href="/mark.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icon-512.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/home.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"The Void","applicationCategory":"BusinessApplication","operatingSystem":"Chrome","description":"A trading journal Chrome extension for TradingView with Tradovate CSV import.","url":"https://gethevoid.com/","offers":{"@type":"Offer","price":"15.00","priceCurrency":"USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="The Void, home">
+      <svg viewBox="0 0 1024 1024" aria-hidden="true"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#050305" stroke-width="190" stroke-linejoin="round"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#ff3b47" stroke-width="84" stroke-linejoin="miter"/></svg>
+      The Void
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="/demo/" >Live demo</a>
+      <a class="opt" href="/setup/" >Setup</a>
+      <a class="opt" href="/changelog/" >Changelog</a>
+      <a class="btn primary small js-buy" href="/#get">Get it</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero" id="hero">
+    <canvas id="hole" aria-hidden="true"></canvas>
+    <div class="floats" aria-hidden="true">
+      <div class="fl f1"><span class="chip" style="--dur:7s">win rate<b>63.0%</b><span class="up">17W</span> / <span class="dn">10L</span></span></div>
+      <div class="fl f3"><span class="chip" style="--dur:8s;--dl:-2s">equity curve<svg width="148" height="46" viewBox="0 0 148 46" fill="none"><path d="M2 38 C14 36 20 40 32 34 S52 30 62 31 S82 22 92 20 S112 24 122 12 S138 6 146 5" stroke="#3ddc97" stroke-width="2"/><path d="M2 38 C14 36 20 40 32 34 S52 30 62 31 S82 22 92 20 S112 24 122 12 S138 6 146 5 L146 46 L2 46Z" fill="#3ddc97" opacity=".12"/></svg></span></div>
+      <div class="fl f2"><span class="chip" style="--dur:9s;--dl:-4s">Tue 12<b class="up">+$224</b>2 trades</span></div>
+      <div class="fl f4"><span class="chip" style="--dur:6.5s;--dl:-1s">MNQ &middot; long<b class="up">+1.8R</b>breakout, tagged</span></div>
+      <div class="fl f5"><span class="chip" style="--dur:8.5s;--dl:-3s">the vault<b>&bull;&bull;&bull;&bull;</b>PIN locked</span></div>
+      <div class="fl f6"><span class="chip" style="--dur:7.5s;--dl:-5s">Wed 13<b class="dn">&minus;$184</b><span class="cal" aria-hidden="true"><i class="g"></i><i class="G"></i><i class="r"></i><i class="G"></i><i class="g"></i><i></i><i></i></span></span></div>
+    </div>
+    <div class="wrap">
+      <h1 class="word" aria-label="The Void">
+        <span class="the" aria-hidden="true">the</span>
+        <span class="void" aria-hidden="true"><i>V</i><span class="o" id="o"></span><i>I</i><i>D</i></span>
+      </h1>
+      <p class="tagline">The trading journal that lives on your chart.</p>
+      <p class="lede">A Chrome extension for TradingView. Import your Tradovate orders, read your month at a glance, review your week, and keep private notes behind a PIN.</p>
+      <div class="cta">
+        <a class="btn primary js-buy" href="#get">Get The Void &middot; $15</a>
+        <a class="btn ghost" href="/demo/">Try the live demo</a>
+      </div>
+      <p class="fine">One-time payment. No subscription. Your data stays in your own browser. Numbers shown are sample data.</p>
+    </div>
+    <span class="scrollhint" aria-hidden="true"></span>
+  </div>
+
+  <section class="stage-sec" id="stage-sec">
+    <div class="sfl s1" aria-hidden="true"><span class="chip">profit factor<b>5.03</b>sample</span></div>
+    <div class="sfl s2" aria-hidden="true"><span class="chip">best day<b class="up">+$568</b>sample</span></div>
+    <div class="sfl s3" aria-hidden="true"><span class="chip">avg R<b>+1.28R</b>sample</span></div>
+    <div class="wrap stage" id="stage">
+      <div class="top">
+        <h2 class="head">Your whole month on one screen.</h2>
+        <p class="cap">Sample data</p>
+      </div>
+      <div class="frame">
+        <div class="tilt" id="tilt">
+          <div class="shot"><img src="/img/dashboard.webp" alt="The Void dashboard: monthly calendar of daily results, equity curve, win rate and profit factor" width="2160" height="1350">
+            <span class="hl h1"></span><span class="hl h2"></span><span class="hl h3"></span>
+          </div>
+        </div>
+      </div>
+      <ol class="beats" id="beats">
+        <li><span class="tag">1 of 3</span><h3>The numbers</h3><p>Net P&amp;L, win rate, profit factor and average R. They rebuild every time you import.</p></li>
+        <li><span class="tag">2 of 3</span><h3>Your month</h3><p>Every trading day is a tile, colored by how the day ended.</p></li>
+        <li><span class="tag">3 of 3</span><h3>Your curve</h3><p>The equity curve of your account, so a drawdown never sneaks up on you.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="copy">
+        <h2 class="head">Every trade, with the numbers you actually review.</h2>
+        <ul>
+          <li>Import Tradovate order CSVs. Entries and exits are paired into trades for you.</li>
+          <li>Stop, risk and R multiple are worked out from your orders, and you can override them.</li>
+          <li>Tag the setup and how it went, then write notes while it is fresh.</li>
+          <li>Attach a recap video to a trade, or link one.</li>
+        </ul>
+      </div>
+      <div class="shot t3d"><img src="/img/trade-detail.webp" alt="A trade open in The Void with net P&amp;L, R multiple, stop and target, and review notes" width="2160" height="1350" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="demo-band">
+    <div class="wrap">
+      <div><h2 class="head">Click around before you buy.</h2><p>The live demo is a replica running on sample data. Open a day, open a trade, switch between Today, Week and Month.</p></div>
+      <a class="btn primary" href="/demo/">Open the live demo</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split flip">
+      <div class="shot vault-shot t3d"><img src="/img/vault-lock.webp" alt="The Vault asking for a four digit PIN" width="2160" height="1350" loading="lazy"></div>
+      <div class="copy">
+        <h2 class="head">A private room next to your journal.</h2>
+        <ul>
+          <li>The Vault opens on a four-digit PIN and shows nothing from your journal.</li>
+          <li>Folders you can drag into any order.</li>
+          <li>Notes that take pasted screenshots, plus links and videos with timestamped notes.</li>
+          <li>Its own storage and its own backup, separate from your trade data.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="toolbox" style="background:var(--bg-2);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <h2 class="head">The rest of the desk.</h2>
+      <dl>
+        <div class="row"><dt>Cockpit</dt><dd>A big session clock with your trading windows, today's result, daily limits and a quick mood check-in.</dd></div>
+        <div class="row"><dt>Weekly reviews</dt><dd>Write the review, set one rule for next week, and watch your streak.</dd></div>
+        <div class="row"><dt>Checklist</dt><dd>A pre-trade checklist you tick through before you click.</dd></div>
+        <div class="row"><dt>Share cards</dt><dd>Turn a trade, a day, a week or a month into a clean image to post.</dd></div>
+        <div class="row"><dt>Accounts</dt><dd>Track several accounts side by side, each with its own results.</dd></div>
+        <div class="row"><dt>Backups</dt><dd>Save your journal to a folder on your computer and restore it any time.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="get" id="get">
+    <div class="wrap">
+      <h2 class="head">How to get it.</h2>
+      <div class="price-card">
+        <div>
+          <div class="price">$15</div>
+          <p class="once">One time. No subscription.</p>
+          <div class="cta">
+            <a class="btn primary js-buy" href="#get">Get The Void</a>
+            <a class="btn ghost js-discord" href="#get">Join the Discord</a>
+          </div>
+        </div>
+        <ul>
+          <li>The Chrome extension, delivered in the Discord after you pay.</li>
+          <li>A short setup guide, also on <a href="/setup/">this site</a>.</li>
+          <li>Your data stays in your own browser. Nothing is sent to the creator.</li>
+          <li>Refunds are handled case by case. Message the creator in the Discord first. See <a href="/refunds/">refunds</a>.</li>
+        </ul>
+      </div>
+      <ol class="steps">
+        <li><strong>Join the Discord</strong>Read the rules and accept the agreement.</li>
+        <li><strong>Pay $15</strong>Use the payment link in the server. It is a one-time payment.</li>
+        <li><strong>Get your role</strong>Claim your access on the payment page so your Discord account is linked and your Buyer role is added.</li>
+        <li><strong>Set it up</strong>Download the extension from the Buyer channel and follow the <a href="/setup/">setup guide</a>.</li>
+      </ol>
+      <p class="fine">Enter your Discord account when Whop asks, so your role is added automatically.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <h2 class="head">Questions.</h2>
+      <div class="faq">
+        <details><summary>Does it place trades or give signals?</summary><p>No. It is a journal. It reads the order files you import and helps you review them. It never connects to your broker.</p></details>
+        <details><summary>Which brokers does it import from?</summary><p>Tradovate order exports work today. Other formats are not supported yet.</p></details>
+        <details><summary>Where is my data stored?</summary><p>In your own browser. The creator does not receive your trades. You can back up to a folder on your computer.</p></details>
+        <details><summary>Is it affiliated with TradingView or Tradovate?</summary><p>No. The Void is an independent tool and is not made, endorsed or supported by TradingView, Tradovate or any prop firm.</p></details>
+        <details><summary>What about refunds?</summary><p>Refunds are handled case by case. Message the creator in the Discord before you open a dispute with your bank.</p></details>
+        <details><summary>Can I share my copy?</summary><p>One purchase is for one person. Please do not resell or share the download.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/"><svg viewBox="0 0 1024 1024" aria-hidden="true"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#050305" stroke-width="190" stroke-linejoin="round"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#ff3b47" stroke-width="84" stroke-linejoin="miter"/></svg>The Void</a>
+      <nav aria-label="Footer"><a href="/demo/">Live demo</a><a href="/setup/">Setup</a><a href="/changelog/">Changelog</a><a href="/terms/">Terms</a><a href="/privacy/">Privacy</a><a href="/refunds/">Refunds</a><a class="js-discord" href="/#get">Discord</a></nav>
+    </div>
+    <p class="legal">The Void is an independent personal-use tool. It is not made, endorsed or supported by TradingView, Tradovate, any prop firm or any data provider. Nothing on this site is financial, investment, legal or tax advice. Trading involves risk, and you can lose more than you deposit. Screenshots and numbers on this site are sample data.</p>
+  </div>
+</footer>
+
+<script src="/js/site.js"></script>
+<script src="/js/hole.js"></script>
+<script src="/vendor/gsap.min.js" defer></script>
+<script src="/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/vendor/lenis.min.js" defer></script>
+<script src="/js/home.js" defer></script>
+
+</body>
+</html>
