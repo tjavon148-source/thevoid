@@ -4,12 +4,12 @@
   "compatibility_date": "2026-11-01",
   "kv_namespaces": [{ "binding": "AGREEMENTS" }],
   "vars": {
-    "GUILD_ID": "",
-    "ADMIN_USER_ID": "",
-    "AGREED_ROLE_ID": "",
-    "BUYER_ROLE_ID": "",
-    "GET_IT_CHANNEL_ID": "",
-    "DISCORD_PUBLIC_KEY": "",
+    "GUILD_ID": "1574635715302531183",
+    "ADMIN_USER_ID": "1188284532907061371",
+    "AGREED_ROLE_ID": "1574647155388588114",
+    "BUYER_ROLE_ID": "1574647156164526120",
+    "GET_IT_CHANNEL_ID": "1574647163064160366",
+    "DISCORD_PUBLIC_KEY": "05b035d4ddadc933f1557b19a86d3d9faa0929e392d1895622331b5559eadea6",
     "PAYMENT_LINK_URL": "https://whop.com/the-void-619c/the-void-b1/",
     "PRICE_LABEL": "$15",
     "AGREEMENT_VERSION": "2026-11-23"
