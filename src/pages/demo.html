@@ -1,0 +1,39 @@
+<!-- path: /demo/ -->
+<!-- nav: demo -->
+<!-- title: Live demo: try The Void on sample data -->
+<!-- desc: Click through a replica of The Void dashboard, trades list, trade review and PIN-locked Vault. Everything runs on sample data in your browser. -->
+<!-- head: <link rel="stylesheet" href="/css/demo.css"> -->
+
+{{header}}
+<main id="main">
+  <div class="demo-top">
+    <div class="wrap">
+      <div>
+        <h1>Try it. Nothing here is real.</h1>
+        <p>A replica of The Void running on sample data in your browser. Click a day, open a trade, switch Today, Week and Month, then try the Vault.</p>
+      </div>
+      <a class="btn primary js-buy" href="/#get">Get The Void &middot; $15</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="app" id="app">
+      <aside class="side" aria-label="Demo navigation">
+        <div class="side-brand"><svg viewBox="0 0 1024 1024" aria-hidden="true"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#050305" stroke-width="190" stroke-linejoin="round"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#ff3b47" stroke-width="84"/></svg><span>The Void</span></div>
+        <div class="side-list" id="nav" role="tablist"></div>
+      </aside>
+      <div class="main-pane">
+        <div class="sample-bar"><span class="pill">Sample data</span><span id="hint">Click any day on the calendar.</span></div>
+        <div id="view" tabindex="-1"></div>
+      </div>
+    </div>
+    <p class="fine demo-fine">This page is a purpose-built replica. It makes no network calls, stores nothing, and the trades, prices and notes are made up. It is not a record of anyone's results.</p>
+  </div>
+</main>
+<div class="modal" id="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="m-title" tabindex="-1" id="modal-box"></div>
+</div>
+{{footer}}
+<script src="/js/site.js"></script>
+<script src="/js/demo.js"></script>
+<script src="/vendor/lenis.min.js" defer></script>
+<script>window.addEventListener("load",function(){if(window.VOID)VOID.initLenis()});</script>
