@@ -3,6 +3,7 @@
 const API = 'https://discord.com/api/v10';
 const FLAG_EPHEMERAL = 64;
 import { signKey, KINDS } from './license.js';
+import { GW, handleGiveawayButton, handleGiveawayCommand, runDue } from './giveaway.js';
 export const IDS = { agree: 'void:agree', payLink: 'void:paylink', key: 'void:key' };
 
 const hex = (s) => Uint8Array.from(s.match(/../g).map((b) => parseInt(b, 16)));
@@ -61,6 +62,7 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       if (!roles.includes(env.BUYER_ROLE_ID)) return reply(`Keys are for Buyers. Get The Void in <#${env.GET_IT_CHANNEL_ID}>, then come back.`);
       return keyReply(env, userId, 'buyer');
     }
+    if (i.data.custom_id.startsWith(GW.enter) || i.data.custom_id.startsWith(GW.leave)) return handleGiveawayButton(i, env, now);
     return reply('That button is not active any more.');
   }
 
@@ -82,6 +84,10 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       if (!target) return reply('Missing user.');
       return keyReply(env, target, kind, true);
     }
+    if (name === 'giveaway') {
+      if (!isAdmin) return reply('Only the owner can run this.');
+      return handleGiveawayCommand(i, env, fetchFn, now);
+    }
     if (name === 'keypanel') {
       if (!isAdmin) return reply('Only the owner can run this.');
       return { type: 4, data: { content: ['**Get your key**', 'Buyers: press the button for your personal key. The Void asks for it the first time you open it. It is tied to your Discord account, so keep it private.'].join('\n'),
@@ -93,6 +99,7 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
 }
 
 export default {
+  async scheduled(event, env, ctx) { ctx.waitUntil(runDue(env)); },   // cron: ends giveaways whose time is up
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'GET') return new Response('The Void bot is running.');

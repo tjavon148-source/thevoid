@@ -2,6 +2,7 @@
   "name": "void-bot",
   "main": "src/worker.js",
   "compatibility_date": "2026-11-01",
+  "triggers": { "crons": ["*/5 * * * *"] },
   "kv_namespaces": [{ "binding": "AGREEMENTS" }],
   "vars": {
     "GUILD_ID": "1574635715302531183",
