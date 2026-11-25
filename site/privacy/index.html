@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Privacy | The Void</title>
-<meta name="description" content="What The Void and this website do and do not collect.">
+<title>Privacy Policy | The Void</title>
+<meta name="description" content="What The Void, its Chrome extension, this website and its Discord server do and do not collect.">
 <link rel="canonical" href="https://gethevoid.com/privacy/">
 <meta name="theme-color" content="#050305">
 <meta property="og:type" content="website"><meta property="og:site_name" content="The Void">
-<meta property="og:title" content="Privacy | The Void"><meta property="og:description" content="What The Void and this website do and do not collect.">
+<meta property="og:title" content="Privacy Policy | The Void"><meta property="og:description" content="What The Void, its Chrome extension, this website and its Discord server do and do not collect.">
 <meta property="og:url" content="https://gethevoid.com/privacy/"><meta property="og:image" content="https://gethevoid.com/og.png">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://gethevoid.com/og.png">
 <meta name="robots" content="noindex">
@@ -36,17 +36,54 @@
 </header>
 
 <main id="main">
-  <div class="page-head"><div class="wrap"><h1>Privacy.</h1><p>Short, because there is little to say.</p></div></div>
+  <div class="page-head"><div class="wrap"><h1>Privacy policy.</h1><p>Last updated: 25 November 2026</p></div></div>
   <div class="wrap prose">
-    <div class="notice"><strong>Draft.</strong> This page is a working draft and has not been reviewed by a lawyer. It will be replaced with a reviewed version before launch.</div>
-    <h2>The extension</h2>
-    <p>Your trades, notes and Vault contents are stored in your own browser. The extension does not connect to your broker.</p>
+    <p>This policy explains what information The Void handles, where it goes, and what you can do about it. The short version: the extension keeps your trading data on your own computer and sends none of it to us. The few things that do involve other services are listed below.</p>
+    <p>"The Void" means the Chrome extension, the website at gethevoid.com, and the Discord server and its bot. "We" and "us" mean the owner of The Void. Contact: <a href="mailto:support@gethevoid.com">support@gethevoid.com</a></p>
+    <h2>The Chrome extension</h2>
+    <p><strong>Your data stays on your computer.</strong> Your trades, notes, screenshots, videos, checklists, reviews, settings and Vault contents are stored in your own browser (Chrome's extension storage and local database). We do not receive them. We have no accounts, no servers that hold your journal, and no way to see it.</p>
+    <p><strong>Backups.</strong> If you turn on backups, the extension writes copies of your data to a folder you choose on your computer. That folder is yours. It is not uploaded anywhere by The Void.</p>
+    <p><strong>Vault PIN.</strong> If you set a PIN for the Vault, only a salted hash of it is stored in your browser. It cannot be recovered. If you forget it, the Vault can only be reset, which deletes its contents.</p>
+    <p><strong>TradingView.</strong> The extension runs on tradingview.com pages so it can show its panel and let you capture your chart. It reads the page only for that purpose. What it reads, and the screenshots you capture, stay on your computer. The Void is not made, endorsed or supported by TradingView.</p>
+    <p><strong>Economic calendar.</strong> The extension downloads a public weekly economic calendar from nfs.faireconomy.media for the News page. This is the only network request the extension makes. The request asks for the calendar file and does not include your trades, notes or any personal information. As with any web request, the calendar host can see your IP address.</p>
+    <p><strong>Tradovate files.</strong> When you import a Tradovate Orders CSV, the file is read on your computer. It is not uploaded.</p>
+    <p><strong>License key.</strong> Your license key is checked on your computer against a public key built into the extension. The check does not contact us. The key contains your Discord user ID, which is how we issue keys to buyers.</p>
+    <p><strong>Permissions.</strong> The extension asks Chrome for these permissions, for these reasons: storage and unlimitedStorage (keep your journal, screenshots and videos on your computer), activeTab (capture the visible chart when you ask), alarms (session reminders and calendar refresh), notifications (reminders you turn on), access to tradingview.com (show the panel on your chart), and access to nfs.faireconomy.media (download the calendar).</p>
+    <p><strong>No tracking.</strong> The extension has no analytics, no advertising, no crash reporting and no remote code. All code ships inside the package.</p>
+    <p><strong>Limited use.</strong> We do not sell or transfer user data to third parties, we do not use it for anything unrelated to the extension's single purpose (a private trading journal), and we do not use it to judge creditworthiness or for lending. The extension does not collect user data in the first place.</p>
     <h2>This website</h2>
-    <p>This site uses Cloudflare Web Analytics, which is cookieless and does not track you across sites. There are no advertising trackers and no cookies set by this site. The live demo runs on made-up sample data and makes no network calls.</p>
-    <h2>Payments and Discord</h2>
-    <p>When you buy, Whop processes your payment and holds your payment details. When you join the Discord server, Discord and the server's bot handle your Discord account information, such as your username and roles. Those services have their own privacy policies.</p>
-    <h2>Email</h2>
-    <p>If you write to <a href="mailto:support@gethevoid.com">support@gethevoid.com</a>, the message is used only to reply to you.</p>
+    <p>gethevoid.com uses Cloudflare Web Analytics to count visits. It is cookieless and does not track you across sites. The site sets no cookies of its own and has no advertising trackers. The live demo uses made-up sample data and makes no network calls with your information. Our host, Cloudflare, processes standard request information such as your IP address to deliver the site and protect it from abuse.</p>
+    <h2>Buying The Void</h2>
+    <p>Payment is handled by <strong>Whop</strong>. Whop processes your payment and holds your payment details; we do not see or store your card or bank details. Whop may share your name, email and Discord account with us as needed to complete the purchase and grant access. Whop's own privacy policy applies to what it collects.</p>
+    <h2>Discord server and bot</h2>
+    <p>If you join our Discord server, <strong>Discord</strong> handles your account information under its own privacy policy. Our bot (which runs on Cloudflare Workers) uses your Discord user ID and roles to:</p>
+    <ul>
+      <li>record that you accepted the server rules;</li>
+      <li>give you the Buyer role after a purchase and unlock the download channel;</li>
+      <li>issue your personal license key, which contains your Discord user ID;</li>
+      <li>enter you in giveaways and pick winners.</li>
+    </ul>
+    <p>For giveaways and rule acceptance, the bot stores your Discord user ID together with the giveaway or rules version. Giveaway records are kept for up to 120 days so a result can be re-drawn, then expire automatically. Whatever you post in Discord is also governed by Discord's terms and policies.</p>
+    <h2>Email and support</h2>
+    <p>If you write to <a href="mailto:support@gethevoid.com">support@gethevoid.com</a>, we use your message and address only to reply to you and to help with your request, and we keep it as long as needed for that.</p>
+    <h2>What we do not do</h2>
+    <p>We do not sell your information. We do not share your journal, because we do not have it. We do not use advertising or profiling.</p>
+    <h2>Your choices and rights</h2>
+    <ul>
+      <li><strong>Your journal:</strong> you control it. Export or back it up from the extension. Removing the extension or clearing its data deletes what it stored in your browser. Backup folders you made stay where you saved them until you delete them.</li>
+      <li><strong>Information we hold about you</strong> (for example Discord user ID records, license key issuance, support emails): you can ask what we hold, ask us to correct or delete it, or object to its use by emailing <a href="mailto:support@gethevoid.com">support@gethevoid.com</a>. We will respond within a reasonable time. Depending on where you live, you may have additional rights under laws such as the GDPR or CCPA, and we will honour them where they apply.</li>
+      <li><strong>Third parties:</strong> to access or delete what Whop, Discord or Cloudflare hold, use their own tools and policies.</li>
+    </ul>
+    <h2>Security</h2>
+    <p>Your journal data stays on your own device, so its protection depends largely on your computer and browser profile. The Vault PIN adds a lock inside the extension. We keep the key used to sign licenses as a protected secret and do not store it with user data.</p>
+    <h2>Children</h2>
+    <p>The Void is a trading tool intended for adults. It is not directed at anyone under 18, and we do not knowingly collect information from children.</p>
+    <h2>International use</h2>
+    <p>We run The Void using services in several countries (Cloudflare, Whop, Discord). If you use it from outside the United States, information handled by those services may be processed where they operate.</p>
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, we will post the new version here with a new date. If we ever change what the extension collects, we will update this page before the change ships.</p>
+    <h2>Not affiliated, not advice</h2>
+    <p>The Void is not made, endorsed or supported by TradingView, Tradovate, any prop firm or any data provider. The Void is a journaling tool. It does not give trading, investment or financial advice and does not show or promise results.</p>
   </div>
 </main>
 <footer>
