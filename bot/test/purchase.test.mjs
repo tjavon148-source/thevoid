@@ -80,3 +80,10 @@ test('worker routes: webhook needs signature, purchase endpoint has CORS, /claim
   assert.match((await handleInteraction(cmd('purchase', 'buyer@example.com', 'u1'), env)).data.content, /Only the owner/);
   assert.match((await handleInteraction(cmd('purchase', 'buyer@example.com', 'admin1'), env)).data.content, /claimed/);
 });
+test('/claim only works in the claim channel when one is set', async () => {
+  const env = { ...mkEnv(), CLAIM_CHANNEL_ID: 'c-claim' }; await handleStripeEvent(paid(), env);
+  const { code } = await codeForSession('cs_test_abcdefghij1', env);
+  const cmd = (ch) => ({ type: 2, channel_id: ch, member: { user: { id: 'u1' }, roles: ['r-a'] }, data: { name: 'claim', options: [{ name: 'code', value: code }] } });
+  assert.match((await handleInteraction(cmd('other'), env, fetchLog([]))).data.content, /<#c-claim>/);
+  assert.match((await handleInteraction(cmd('c-claim'), env, fetchLog([]))).data.content, /You are in/);
+});

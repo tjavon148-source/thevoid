@@ -87,6 +87,7 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
     }
     if (name === 'claim') {
       if (!roles.includes(env.AGREED_ROLE_ID)) return reply('Read and accept the agreement first.');
+      if (env.CLAIM_CHANNEL_ID && i.channel_id !== env.CLAIM_CHANNEL_ID) return reply(`Please use /claim in <#${env.CLAIM_CHANNEL_ID}>.`);
       return reply(await claimCode(i.data.options?.find((o) => o.name === 'code')?.value, userId, env, fetchFn, now));
     }
     if (name === 'purchase') {
