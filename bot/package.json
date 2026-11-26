@@ -2,5 +2,5 @@
   "name": "void-bot-worker",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test test/worker.test.mjs test/giveaway.test.mjs" }
+  "scripts": { "test": "node --test test/worker.test.mjs test/giveaway.test.mjs test/purchase.test.mjs" }
 }

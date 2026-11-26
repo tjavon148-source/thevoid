@@ -3,6 +3,7 @@
 const API = 'https://discord.com/api/v10';
 const FLAG_EPHEMERAL = 64;
 import { signKey, KINDS } from './license.js';
+import { handleStripeEvent, verifyStripeSignature, codeForSession, claimCode, lookupByEmail } from './purchase.js';
 import { GW, handleGiveawayButton, handleGiveawayCommand, runDue } from './giveaway.js';
 export const IDS = { agree: 'void:agree', payLink: 'void:paylink', key: 'void:key' };
 
@@ -56,7 +57,7 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       if (roles.includes(env.BUYER_ROLE_ID)) return reply('You already have the Buyer role.');
       if (!roles.includes(env.AGREED_ROLE_ID)) return reply('Read and accept the agreement first.');
       return reply([`Checkout (${env.PRICE_LABEL}, one time):`, paymentUrl(env.PAYMENT_LINK_URL), '',
-        'After you pay, press **Claim Access** on the Whop page and pick your Discord account. That gives you the Buyer role and unlocks the download. Stuck? Message the owner.'].join('\n'));
+        'After you pay you land on a page with your purchase code. Come back here and type `/claim` with that code. That gives you the Buyer role and unlocks the download. Stuck? Message the owner.'].join('\n'));
     }
     if (i.data.custom_id === IDS.key) {
       if (!roles.includes(env.BUYER_ROLE_ID)) return reply(`Keys are for Buyers. Get The Void in <#${env.GET_IT_CHANNEL_ID}>, then come back.`);
@@ -84,6 +85,14 @@ export async function handleInteraction(i, env, fetchFn = fetch, now = () => Dat
       if (!target) return reply('Missing user.');
       return keyReply(env, target, kind, true);
     }
+    if (name === 'claim') {
+      if (!roles.includes(env.AGREED_ROLE_ID)) return reply('Read and accept the agreement first.');
+      return reply(await claimCode(i.data.options?.find((o) => o.name === 'code')?.value, userId, env, fetchFn, now));
+    }
+    if (name === 'purchase') {
+      if (!isAdmin) return reply('Only the owner can run this.');
+      return reply(await lookupByEmail(i.data.options?.find((o) => o.name === 'email')?.value, env));
+    }
     if (name === 'giveaway') {
       if (!isAdmin) return reply('Only the owner can run this.');
       return handleGiveawayCommand(i, env, fetchFn, now);
@@ -102,6 +111,17 @@ export default {
   async scheduled(event, env, ctx) { ctx.waitUntil(runDue(env)); },   // cron: ends giveaways whose time is up
   async fetch(request, env) {
     const url = new URL(request.url);
+    const cors = { 'access-control-allow-origin': env.SITE_ORIGIN || 'https://gethevoid.com', 'access-control-allow-methods': 'GET', vary: 'origin' };
+    if (url.pathname === '/purchase' && request.method === 'GET') {
+      const r = await codeForSession(url.searchParams.get('session_id'), env);
+      return new Response(JSON.stringify(r), { status: r.status === 'bad-request' ? 400 : 200, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...cors } });
+    }
+    if (url.pathname === '/stripe' && request.method === 'POST') {
+      const body = await request.text();
+      if (!(await verifyStripeSignature(request.headers.get('stripe-signature'), body, env.STRIPE_WEBHOOK_SECRET))) return new Response('Bad signature', { status: 400 });
+      try { console.log('stripe', await handleStripeEvent(JSON.parse(body), env)); return new Response('ok'); }
+      catch (e) { console.error('stripe error', e); return new Response('error', { status: 500 }); }   // 500 makes Stripe retry
+    }
     if (request.method === 'GET') return new Response('The Void bot is running.');
     if (request.method !== 'POST' || url.pathname !== '/') return new Response('Not found', { status: 404 });
     const body = await request.text();

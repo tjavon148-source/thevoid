@@ -1,4 +1,4 @@
-// Run once on your computer (needs Node 20+): registers /grant, /revoke, /key, /keypanel and /giveaway (replaces any older command set).
+// Run once on your computer (needs Node 20+): registers /grant, /revoke, /key, /keypanel, /claim, /purchase and /giveaway (replaces any older command set).
 // Usage (Windows): set DISCORD_TOKEN=...  then  set APP_ID=...  then  set GUILD_ID=...  then  node scripts/register-commands.mjs
 const { DISCORD_TOKEN, APP_ID, GUILD_ID } = process.env;
 if (!DISCORD_TOKEN || !APP_ID || !GUILD_ID) { console.error('Set DISCORD_TOKEN, APP_ID and GUILD_ID first.'); process.exit(1); }
@@ -9,6 +9,8 @@ const commands = [
   { name: 'key', description: 'Owner only: make a key for someone (gift or giveaway)', default_member_permissions: '8', options: [...userOpt,
     { type: 3, name: 'kind', description: 'Default: gift', required: false, choices: [{ name: 'gift', value: 'gift' }, { name: 'giveaway', value: 'giveaway' }, { name: 'buyer', value: 'buyer' }] }] },
   { name: 'keypanel', description: 'Owner only: post the Get my key button in this channel', default_member_permissions: '8' },
+  { name: 'claim', description: 'Use the purchase code from the page you saw after paying', options: [{ type: 3, name: 'code', description: 'Looks like VOID-ABCD-EFGH', required: true }] },
+  { name: 'purchase', description: 'Owner only: look up a purchase code by buyer email', default_member_permissions: '8', options: [{ type: 3, name: 'email', description: 'Buyer email', required: true }] },
   { name: 'giveaway', description: 'Owner only: run giveaways in this channel', default_member_permissions: '8', options: [
     { type: 1, name: 'start', description: 'Start a giveaway here', options: [
       { type: 3, name: 'prize', description: 'What they win', required: true },
@@ -22,4 +24,4 @@ const commands = [
 const res = await fetch(`https://discord.com/api/v10/applications/${APP_ID}/guilds/${GUILD_ID}/commands`, {
   method: 'PUT', headers: { authorization: `Bot ${DISCORD_TOKEN}`, 'content-type': 'application/json' }, body: JSON.stringify(commands),
 });
-console.log(res.ok ? 'Commands registered: /grant, /revoke, /key, /keypanel and /giveaway.' : `Failed: ${res.status} ${await res.text()}`);
+console.log(res.ok ? 'Commands registered: /grant, /revoke, /key, /keypanel, /claim, /purchase and /giveaway.' : `Failed: ${res.status} ${await res.text()}`);
