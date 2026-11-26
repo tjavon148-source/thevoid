@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import worker, { handleInteraction, verifySignature, IDS } from '../src/worker.js';
 
 const env = { GUILD_ID: 'g1', ADMIN_USER_ID: 'admin1', AGREED_ROLE_ID: 'r-agreed', BUYER_ROLE_ID: 'r-buyer', GET_IT_CHANNEL_ID: 'c-getit',
-  PAYMENT_LINK_URL: 'https://whop.com/the-void-619c/the-void-b1/', PRICE_LABEL: '$15', AGREEMENT_VERSION: 'v1', DISCORD_TOKEN: 'tok' };
+  PAYMENT_LINK_URL: 'https://buy.stripe.com/aFafZgfVj79r5Jq0zffw400', PRICE_LABEL: '$15', AGREEMENT_VERSION: 'v1', DISCORD_TOKEN: 'tok' };
 const mkFetch = (log, ok = true) => async (url, init) => { log.push([init.method, url, init.headers.authorization]); return { ok, status: ok ? 204 : 403 }; };
 const kv = () => { const m = new Map(); return { m, put: async (k, v) => m.set(k, v), get: async (k) => m.get(k) ?? null }; };
 const btn = (id, roles = [], uid = 'u1') => ({ type: 3, member: { user: { id: uid }, roles }, data: { custom_id: id } });
@@ -23,11 +23,11 @@ test('agree reports a failed role call without recording', async () => {
   const r = await handleInteraction(btn(IDS.agree), e, mkFetch([], false));
   assert.match(r.data.content, /must sit above/); assert.equal(e.AGREEMENTS.m.size, 0);
 });
-test('pay link needs agreement, hides from buyers, otherwise returns the Whop link', async () => {
+test('pay link needs agreement, hides from buyers, otherwise returns the Stripe link', async () => {
   assert.match((await handleInteraction(btn(IDS.payLink, []), env)).data.content, /accept the agreement/);
   assert.match((await handleInteraction(btn(IDS.payLink, ['r-agreed', 'r-buyer']), env)).data.content, /already have/);
   const ok = (await handleInteraction(btn(IDS.payLink, ['r-agreed']), env)).data.content;
-  assert.match(ok, /whop\.com\/the-void-619c\/the-void-b1\//); assert.match(ok, /\/claim/);
+  assert.match(ok, /buy\.stripe\.com\//); assert.match(ok, /\/claim/);
 });
 test('grant and revoke are owner only and call the right method', async () => {
   const cmd = (name, uid) => ({ type: 2, member: { user: { id: uid }, roles: [] }, data: { name, options: [{ name: 'user', value: 'target9' }] } });

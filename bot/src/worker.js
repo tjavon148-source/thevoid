@@ -37,7 +37,7 @@ async function keyReply(env, userId, kind, forOther = false) {
     forOther ? 'Send it to them privately.' : 'Copy all of it. Paste it into The Void the first time you open it.'].join('\n'));
 }
 
-export function paymentUrl(base) { return new URL(base).toString(); }   // Whop links the buyer's Discord account itself
+export function paymentUrl(base) { return new URL(base).toString(); }   // Stripe checkout; the buyer claims access with /claim
 
 export async function handleInteraction(i, env, fetchFn = fetch, now = () => Date.now()) {
   if (i.type === 1) return { type: 1 };
