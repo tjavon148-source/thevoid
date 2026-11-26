@@ -74,13 +74,13 @@ test('worker routes: webhook needs signature, purchase endpoint has CORS, /claim
   const res = await worker.fetch(new Request('https://w/purchase?session_id=cs_test_abcdefghij1'), env);
   assert.equal(res.headers.get('access-control-allow-origin'), 'https://gethevoid.com');
   const { code } = await res.json();
-  const cmd = (name, value, uid = 'u1', roles = ['r-a']) => ({ type: 2, member: { user: { id: uid }, roles }, data: { name, options: [{ name: name === 'claim' ? 'code' : 'email', value }] } });
+  const cmd = (name, value, uid = 'u1', roles = ['r-a']) => ({ type: 2, channel_id: 'c1', member: { user: { id: uid }, roles }, data: { name, options: [{ name: name === 'claim' ? 'code' : 'email', value }] } });
   assert.match((await handleInteraction(cmd('claim', code), env, fetchLog([]))).data.content, /You are in/);
   assert.match((await handleInteraction(cmd('claim', code, 'u3', []), env, fetchLog([]))).data.content, /agreement/);
   assert.match((await handleInteraction(cmd('purchase', 'buyer@example.com', 'u1'), env)).data.content, /Only the owner/);
   assert.match((await handleInteraction(cmd('purchase', 'buyer@example.com', 'admin1'), env)).data.content, /claimed/);
 });
-test('/claim only works in the claim channel when one is set', async () => {
+test('/claim only works in get-it (or CLAIM_CHANNEL_ID when set)', async () => {
   const env = { ...mkEnv(), CLAIM_CHANNEL_ID: 'c-claim' }; await handleStripeEvent(paid(), env);
   const { code } = await codeForSession('cs_test_abcdefghij1', env);
   const cmd = (ch) => ({ type: 2, channel_id: ch, member: { user: { id: 'u1' }, roles: ['r-a'] }, data: { name: 'claim', options: [{ name: 'code', value: code }] } });

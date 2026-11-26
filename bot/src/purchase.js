@@ -89,7 +89,7 @@ export async function claimCode(raw, userId, env, fetchFn = fetch, now = () => D
   try { await roleCall(env, 'PUT', userId, 'Claimed purchase code', fetchFn); }
   catch { return 'I could not give you the role. Tell the owner: my role must sit above Buyer.'; }
   if (!rec.claimedBy) await putJson(kv, `purchase:${code}`, { ...rec, status: 'claimed', claimedBy: userId, claimedTs: now() });
-  return `You are in. You now have the Buyer role. Open <#${env.GET_IT_CHANNEL_ID}> and press **Get my key**, or use the key channel.`;
+  return `You are in. You now have the Buyer role. Open ${env.KEY_CHANNEL_ID ? `<#${env.KEY_CHANNEL_ID}>` : 'the downloads channel'} and press **Get my key**.`;
 }
 
 // /purchase (owner): find a code by buyer email, for people who lost theirs.

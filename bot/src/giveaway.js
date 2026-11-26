@@ -59,7 +59,7 @@ async function giveAccess(env, gw, winners, fetchFn) {
   return failed;
 }
 async function announce(env, gw, winners, failed, fetchFn, again = false) {
-  const keyWhere = env.KEY_CHANNEL_ID ? `<#${env.KEY_CHANNEL_ID}>` : 'the get-your-key channel';
+  const keyWhere = env.KEY_CHANNEL_ID ? `<#${env.KEY_CHANNEL_ID}>` : 'the downloads channel';
   const lines = [`${again ? 'New winner' : 'Congratulations'} ${winners.map((w) => `<@${w}>`).join(' ')}! You won **${gw.prize}**.`];
   if (gw.grantAccess) lines.push(`You now have the Buyer role. Press **Get my key** in ${keyWhere}, then download The Void.`);
   else lines.push('The owner will message you about your prize.');
