@@ -1,5 +1,6 @@
 // Stripe purchases -> short purchase codes -> Discord Buyer role. Codes live in KV (binding AGREEMENTS, keys prefixed).
 // Flow: Stripe webhook makes a code, the thank-you page shows it, the buyer runs /claim <code> in Discord.
+import { signKey } from './license.js';
 const API = 'https://discord.com/api/v10';
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';   // no 0/O/1/I/L
 const enc = new TextEncoder();
@@ -8,6 +9,8 @@ export function makeCode(rand = (n) => crypto.getRandomValues(new Uint8Array(n))
   const b = rand(8), ch = (i) => ALPHABET[b[i] % ALPHABET.length];
   return `VOID-${ch(0)}${ch(1)}${ch(2)}${ch(3)}-${ch(4)}${ch(5)}${ch(6)}${ch(7)}`;
 }
+// Purchase keys are tied to the purchase, not to Discord. The id is 20 digits starting with 9, so it can never equal a Discord id.
+export const newUid = (rand = (n) => crypto.getRandomValues(new Uint8Array(n))) => '9' + [...rand(19)].map((x) => x % 10).join('');
 export const normCode = (s) => {
   const c = String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   return c.length === 12 && c.startsWith('VOID') ? `VOID-${c.slice(4, 8)}-${c.slice(8)}` : null;
@@ -47,7 +50,7 @@ export async function handleStripeEvent(event, env, fetchFn = fetch, now = () =>
     if (await kv.get(`session:${o.id}`)) return 'duplicate';
     const code = await newUniqueCode(kv);
     const email = (o.customer_details?.email || o.customer_email || '').toLowerCase();
-    await putJson(kv, `purchase:${code}`, { session: o.id, pi: o.payment_intent || null, email, status: 'unclaimed', claimedBy: null, ts: now() });
+    await putJson(kv, `purchase:${code}`, { session: o.id, uid: newUid(), pi: o.payment_intent || null, email, status: 'unclaimed', claimedBy: null, ts: now() });
     await kv.put(`session:${o.id}`, code);
     if (o.payment_intent) await kv.put(`pi:${o.payment_intent}`, code);
     if (email) await kv.put(`email:${email}`, code);
@@ -74,8 +77,17 @@ export async function codeForSession(sessionId, env) {
   const code = await env.AGREEMENTS.get(`session:${sessionId}`);
   if (!code) return { status: 'pending' };
   const rec = await getJson(env.AGREEMENTS, `purchase:${code}`);
-  if (rec?.status === 'revoked') return { status: 'revoked' };
-  return { status: 'ready', code };
+  if (!rec) return { status: 'pending' };
+  if (rec.status === 'revoked') return { status: 'revoked' };
+  let key = null;
+  if (env.SIGNING_KEY) {
+    try {
+      let uid = rec.uid;
+      if (!uid) { uid = newUid(); await putJson(env.AGREEMENTS, `purchase:${code}`, { ...rec, uid }); }
+      key = await signKey(env.SIGNING_KEY, uid, 'buyer');
+    } catch (e) { console.error('could not sign key', e.message); }
+  }
+  return { status: 'ready', code, key };
 }
 
 // /claim: one purchase gives one Discord account the Buyer role. The same account can run it again safely.
@@ -89,7 +101,7 @@ export async function claimCode(raw, userId, env, fetchFn = fetch, now = () => D
   try { await roleCall(env, 'PUT', userId, 'Claimed purchase code', fetchFn); }
   catch { return 'I could not give you the role. Tell the owner: my role must sit above Buyer.'; }
   if (!rec.claimedBy) await putJson(kv, `purchase:${code}`, { ...rec, status: 'claimed', claimedBy: userId, claimedTs: now() });
-  return `You are in. You now have the Buyer role. Open ${env.KEY_CHANNEL_ID ? `<#${env.KEY_CHANNEL_ID}>` : 'the downloads channel'} and press **Get my key**.`;
+  return `You are in. You now have the Buyer role. Open ${env.KEY_CHANNEL_ID ? `<#${env.KEY_CHANNEL_ID}>` : 'the downloads channel'} for the install link. Lost your key? Press **Get my key** there.`;
 }
 
 // /purchase (owner): find a code by buyer email, for people who lost theirs.

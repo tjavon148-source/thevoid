@@ -87,3 +87,18 @@ test('/claim only works in get-it (or CLAIM_CHANNEL_ID when set)', async () => {
   assert.match((await handleInteraction(cmd('other'), env, fetchLog([]))).data.content, /<#c-claim>/);
   assert.match((await handleInteraction(cmd('c-claim'), env, fetchLog([]))).data.content, /You are in/);
 });
+test('thanks page gets a purchase-bound key that does not depend on Discord', async () => {
+  const env = { ...mkEnv(), SIGNING_KEY: crypto.randomBytes(32).toString('base64') }; await handleStripeEvent(paid(), env);
+  const a = await codeForSession('cs_test_abcdefghij1', env), b = await codeForSession('cs_test_abcdefghij1', env);
+  assert.match(a.key, /^VOID1\.[\w-]+\.[\w-]+$/); assert.equal(a.key, b.key);
+  const p = JSON.parse(Buffer.from(a.key.split('.')[1], 'base64url').toString());
+  assert.match(p.u, /^9\d{19}$/); assert.equal(p.k, 'buyer');
+  assert.equal((await codeForSession('cs_test_abcdefghij1', { ...env, SIGNING_KEY: undefined })).key, null);   // no signing key: code only
+});
+test('older purchase without an id gets one the first time, then keeps it', async () => {
+  const env = { ...mkEnv(), SIGNING_KEY: crypto.randomBytes(32).toString('base64') }; await handleStripeEvent(paid(), env);
+  const { code } = await codeForSession('cs_test_abcdefghij1', env), k = `purchase:${code}`, rec = JSON.parse(env.AGREEMENTS.m.get(k));
+  delete rec.uid; env.AGREEMENTS.m.set(k, JSON.stringify(rec));
+  const a = await codeForSession('cs_test_abcdefghij1', env), b = await codeForSession('cs_test_abcdefghij1', env);
+  assert.equal(a.key, b.key); assert.ok(JSON.parse(env.AGREEMENTS.m.get(k)).uid);
+});

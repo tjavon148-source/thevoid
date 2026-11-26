@@ -1,9 +1,10 @@
-// Fetches the purchase code for the Stripe session in the URL (?session_id=...). The code is created by the Stripe webhook, so it can take a few seconds.
+// Fetches the key and purchase code for the Stripe session in the URL (?session_id=...). They are created by the Stripe webhook, so it can take a few seconds.
 (function () {
   var root = document.getElementById('thanks'); if (!root) return;
   var id = new URLSearchParams(location.search).get('session_id');
-  var state = document.getElementById('code-state'), out = document.getElementById('code'), copy = document.getElementById('copy');
-  var tries = 0;
+  var state = document.getElementById('code-state'), tries = 0;
+  function $(x) { return document.getElementById(x); }
+  function wire(btn, text, label) { btn.hidden = false; btn.onclick = function () { navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = label; }, 2000); }); }; }
   function fail(msg) { state.textContent = msg; }
   function poll() {
     if (!id) return fail('No payment found on this page. If you just paid, open the link from your receipt, or write to support@gethevoid.com.');
@@ -11,9 +12,11 @@
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d.status === 'ready') {
-          state.textContent = 'Here it is:'; out.textContent = d.code; copy.hidden = false;
-          copy.onclick = function () { navigator.clipboard.writeText(d.code).then(function () { copy.textContent = 'Copied'; }); };
-        } else if (d.status === 'revoked') fail('This purchase was refunded, so the code is no longer valid.');
+          state.textContent = 'Payment confirmed. Thank you.';
+          $('code').textContent = d.code; wire($('copy'), d.code, 'Copy code');
+          if (d.key) { $('key').textContent = d.key; wire($('copy-key'), d.key, 'Copy key'); }
+          else $('key').textContent = 'Your key is not ready here. Claim your code in the Discord, then press Get my key in the downloads channel.';
+        } else if (d.status === 'revoked') fail('This purchase was refunded, so the key and code are no longer valid.');
         else if (d.status === 'pending' && ++tries < 20) { state.textContent = 'Confirming your payment...'; setTimeout(poll, 2000); }
         else fail('Your payment is still being confirmed. Wait a minute and refresh this page, or write to support@gethevoid.com.');
       })
