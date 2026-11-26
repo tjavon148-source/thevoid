@@ -1,6 +1,6 @@
 /* Shared behaviour: link targets, smooth scroll, hover tilt. */
 // Fill these in when the links exist. Until then Discord buttons scroll to the buy section.
-window.LINKS = { buy: "https://whop.com/the-void-619c/the-void-b1/", discord: "https://discord.gg/DbBtK3ny2" };
+window.LINKS = { buy: "https://buy.stripe.com/aFafZgfVj79r5Jq0zffw400", discord: "https://discord.gg/DbBtK3ny2" };
 (function () {
   const L = window.LINKS;
   document.querySelectorAll(".js-buy").forEach(a => { if (L.buy) { a.href = L.buy; a.target = "_blank"; a.rel = "noopener"; } });
