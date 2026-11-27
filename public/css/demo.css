@@ -1,5 +1,5 @@
 /* Live demo: a replica of the journal's look, drawn from scratch with made-up data. */
-.demo-top{padding-block:56px 28px;background:radial-gradient(60% 120% at 0% 0%,rgba(160,0,24,.28),transparent 70%)}
+.demo-top{padding-block:56px 28px;background:radial-gradient(60% 120% at 0% 0%,rgba(255,255,255,.045),transparent 70%)}
 .demo-top .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between}
 .demo-top h1{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;font-variation-settings:"wdth" 82,"opsz" 96;letter-spacing:-.025em;max-width:16ch}
 .demo-top p{margin-top:12px;color:#d0c5c8;max-width:52ch}
@@ -9,7 +9,7 @@
 
 /* app shell */
 .app{--a-bg:#050507;--a-card:#0b0a0e;--a-card2:#121018;--a-line:rgba(255,215,222,.09);--a-line2:rgba(255,215,222,.16);--a-muted:#a99ca0;--a-faint:#6e6064;--warn:#f5a524;
-  display:flex;flex-direction:column;height:min(84vh,880px);min-height:640px;border:1px solid #3a1a21;border-radius:16px;overflow:hidden;background:rgba(5,5,7,.86);box-shadow:0 40px 90px -30px rgba(224,16,42,.35);font-family:var(--body);font-size:13px;color:#e7e7ef}
+  display:flex;flex-direction:column;height:min(84vh,880px);min-height:640px;border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;background:rgba(5,5,7,.86);box-shadow:0 40px 90px -30px rgba(0,0,0,.8);font-family:var(--body);font-size:13px;color:#e7e7ef}
 .app button{font:inherit}
 .up{color:var(--green)}.dn{color:var(--loss)}
 .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:42px;padding:0 14px;border-bottom:1px solid var(--a-line);flex:none}

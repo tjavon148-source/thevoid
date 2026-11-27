@@ -35,7 +35,7 @@
     LAYERS.forEach((L, li) => {
       const count = Math.round((total * L.n) / sum);
       for (let i = 0; i < count; i++) {
-        const red = Math.random() < 0.12;
+        const red = Math.random() < 0.05;
         stars.push({ li, x: rnd(0, W), y: rnd(0, H), r: L.size * rnd(0.7, 1.3), tw: rnd(0, 6.28), ts: rnd(0.4, 1.6),
           rgb: red ? "255,82,96" : (Math.random() < 0.5 ? "243,238,238" : "255,225,225") });
       }

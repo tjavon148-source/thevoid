@@ -49,8 +49,8 @@ void main(){
   // red nebula on the left, thin one on the right
   float neb = fbm(wpx / 520.0 + vec2(0.0, uTime * 0.01));
   float left = smoothstep(0.75, 0.0, uv.x);
-  col += vec3(0.62, 0.0, 0.08) * left * (0.28 + 0.55 * neb) * (0.55 + 0.45 * smoothstep(1.0, 0.2, abs(uv.y - 0.45) * 1.6));
-  col += vec3(0.30, 0.0, 0.05) * smoothstep(0.55, 1.0, uv.x) * neb * 0.45;
+  col += vec3(0.16, 0.16, 0.2) * left * (0.28 + 0.55 * neb) * 0.35 * (0.55 + 0.45 * smoothstep(1.0, 0.2, abs(uv.y - 0.45) * 1.6));
+  col += vec3(0.12, 0.12, 0.16) * smoothstep(0.55, 1.0, uv.x) * neb * 0.3;
   // stars (lensed)
   col += starLayer(wpx, 38.0, 0.90, 1.0, 1.7) * 0.9;
   col += starLayer(wpx + 400.0, 90.0, 0.90, 7.0, 2.6) * 1.3;
