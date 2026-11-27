@@ -5,6 +5,21 @@ window.LINKS = { buy: "https://buy.stripe.com/aFafZgfVj79r5Jq0zffw400", discord:
   const L = window.LINKS;
   document.querySelectorAll(".js-buy").forEach(a => { if (L.buy) { a.href = L.buy; a.target = "_blank"; a.rel = "noopener"; } });
   document.querySelectorAll(".js-discord").forEach(a => { if (L.discord) { a.href = L.discord; a.target = "_blank"; a.rel = "noopener"; } });
+  // Anonymous click counts (Buy and Discord buttons) with an optional campaign tag from ?ref=name. No cookies, nothing about you is sent.
+  // Visit /?notrack=1 once on a device to stop counting that device's own clicks.
+  (function () {
+    var STATS = "https://void-bot.tjavon148.workers.dev/e", ref = null;
+    try {
+      if (/[?&]notrack=1\b/.test(location.search)) localStorage.setItem("void-notrack", "1");
+      if (localStorage.getItem("void-notrack")) return;
+      var m = location.search.match(/[?&]ref=([a-z0-9-]{1,24})\b/i);
+      if (m) sessionStorage.setItem("void-ref", m[1].toLowerCase());
+      ref = sessionStorage.getItem("void-ref");
+    } catch (e) {}
+    function send(e) { try { navigator.sendBeacon(STATS, JSON.stringify({ e: e, r: ref })); } catch (x) {} }
+    document.querySelectorAll(".js-buy").forEach(function (a) { a.addEventListener("click", function () { send("buy"); }); });
+    document.querySelectorAll(".js-discord").forEach(function (a) { a.addEventListener("click", function () { send("discord"); }); });
+  })();
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   window.VOID = { reduce, fine: window.matchMedia("(hover: hover) and (pointer: fine)").matches, lenis: null };
 

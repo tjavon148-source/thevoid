@@ -4,6 +4,7 @@ const API = 'https://discord.com/api/v10';
 const FLAG_EPHEMERAL = 64;
 import { signKey, KINDS } from './license.js';
 import { handleStripeEvent, verifyStripeSignature, codeForSession, claimCode, lookupByEmail } from './purchase.js';
+import { recordClick } from './stats.js';
 import { GW, handleGiveawayButton, handleGiveawayCommand, runDue } from './giveaway.js';
 export const IDS = { agree: 'void:agree', payLink: 'void:paylink', key: 'void:key' };
 
@@ -113,7 +114,11 @@ export default {
   async scheduled(event, env, ctx) { ctx.waitUntil(runDue(env)); },   // cron: ends giveaways whose time is up
   async fetch(request, env) {
     const url = new URL(request.url);
-    const cors = { 'access-control-allow-origin': env.SITE_ORIGIN || 'https://gethevoid.com', 'access-control-allow-methods': 'GET', vary: 'origin' };
+    const cors = { 'access-control-allow-origin': env.SITE_ORIGIN || 'https://gethevoid.com', 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'content-type', vary: 'origin' };
+    if (url.pathname === '/e') {   // anonymous click counter, see stats.js
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+      if (request.method === 'POST') { try { await recordClick(await request.text(), request.headers.get('origin'), env); } catch (e) { console.error('stats error', e); } return new Response(null, { status: 204, headers: cors }); }
+    }
     if (url.pathname === '/purchase' && request.method === 'GET') {
       const r = await codeForSession(url.searchParams.get('session_id'), env);
       return new Response(JSON.stringify(r), { status: r.status === 'bad-request' ? 400 : 200, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...cors } });
