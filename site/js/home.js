@@ -69,5 +69,16 @@
     window.addEventListener("load", () => ScrollTrigger.refresh());
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   }
-  if (document.readyState === "complete") motion(); else window.addEventListener("load", motion);
+  /* GSAP, ScrollTrigger and Lenis are only needed for the pinned story on wide screens.
+     Phones and reduced-motion visitors never download them (about 160 KB). */
+  const wide = window.matchMedia("(min-width: 900px)");
+  let loading = false;
+  const script = src => new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  function loadMotion() {
+    if (loading || reduce || !wide.matches) return;
+    loading = true;
+    script("/vendor/gsap.min.js").then(() => Promise.all([script("/vendor/ScrollTrigger.min.js"), script("/vendor/lenis.min.js")])).then(motion).catch(() => {});
+  }
+  const start = () => { loadMotion(); wide.addEventListener("change", loadMotion); };
+  if (document.readyState === "complete") start(); else window.addEventListener("load", start);
 })();

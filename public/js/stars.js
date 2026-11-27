@@ -50,7 +50,10 @@
       vy: speed * Math.sin(ang), life: 0, max: rnd(0.7, 1.1), len: rnd(110, 190) };
   }
 
-  let last = performance.now(), sy = 0;
+  let last = performance.now(), sy = 0, raf = 0, lastDraw = 0;
+  const minGap = small ? 1000 / 30 : 0;   // phones: 30 fps is plenty for slow drift and saves battery
+  function tick(now) { raf = 0; if (now - lastDraw >= minGap - 1) { lastDraw = now; frame(now); } else schedule(); }
+  function schedule() { if (!raf && !document.hidden) raf = requestAnimationFrame(tick); }
   function frame(now) {
     const dt = Math.min((now - last) / 1000, 0.05); last = now;
     ctx.clearRect(0, 0, W, H);
@@ -79,10 +82,12 @@
         if (k >= 1 || shoot.x < -300 || shoot.x > W + 300 || shoot.y > H + 300) { shoot = null; nextShoot = now + rnd(9000, 20000); }
       }
     }
-    if (!reduce) requestAnimationFrame(frame);
+    if (!reduce) schedule();
   }
 
   build();
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (reduce) frame(performance.now()); }, 150); });
-  if (reduce) frame(performance.now()); else requestAnimationFrame(frame);
+  if (reduce) frame(performance.now()); else schedule();
+  // stop completely while the tab is hidden, resume without a jump when it comes back
+  document.addEventListener("visibilitychange", () => { if (reduce) return; if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else { last = performance.now(); schedule(); } });
 })();
