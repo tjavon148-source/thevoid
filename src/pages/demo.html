@@ -1,7 +1,7 @@
 <!-- path: /demo/ -->
 <!-- nav: demo -->
 <!-- title: Live demo: try The Void on sample data -->
-<!-- desc: Click through a replica of The Void dashboard, trades list, trade review and PIN-locked Vault. Everything runs on sample data in your browser. -->
+<!-- desc: Click through a replica of The Void dashboard, trades by week, trade review, checklist and PIN-locked Vault. Everything runs on sample data in your browser. -->
 <!-- head: <link rel="stylesheet" href="/css/demo.css"> -->
 
 {{header}}
@@ -10,20 +10,22 @@
     <div class="wrap">
       <div>
         <h1>Try it. Nothing here is real.</h1>
-        <p>A replica of The Void running on sample data in your browser. Click a day, open a trade, switch Today, Week and Month, then try the Vault.</p>
+        <p>A replica of The Void running on sample data in your browser. Click a day, open a trade and review it, tick the checklist, then try the Vault.</p>
       </div>
       <a class="btn primary js-buy" href="/#get">Get The Void &middot; $15</a>
     </div>
   </div>
   <div class="wrap">
+    <div class="sample-bar"><span class="pill">Sample data</span><span id="hint">Click any day on the calendar.</span></div>
     <div class="app" id="app">
-      <aside class="side" aria-label="Demo navigation">
-        <div class="side-brand"><svg viewBox="0 0 1024 1024" aria-hidden="true"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#050305" stroke-width="190" stroke-linejoin="round"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#ff3b47" stroke-width="84"/></svg><span>The Void</span></div>
-        <div class="side-list" id="nav" role="tablist"></div>
-      </aside>
-      <div class="main-pane">
-        <div class="sample-bar"><span class="pill">Sample data</span><span id="hint">Click any day on the calendar.</span></div>
-        <div id="view" tabindex="-1"></div>
+      <header class="topbar">
+        <div class="tb-brand"><svg viewBox="0 0 1024 1024" aria-hidden="true"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#f3eeee" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/></svg><span>THE VOID</span></div>
+        <div class="clockpill" aria-label="Sample session clock"><i></i><b>9:41 AM</b><span>NY open in 0h 19m</span></div>
+        <div class="tb-icons" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+      </header>
+      <div class="app-body">
+        <aside class="side" aria-label="Demo navigation"><nav id="nav" role="tablist" aria-orientation="vertical"></nav></aside>
+        <div class="main-pane"><div id="view" tabindex="-1"></div></div>
       </div>
     </div>
     <p class="fine demo-fine">This page is a purpose-built replica. It makes no network calls, stores nothing, and the trades, prices and notes are made up. It is not a record of anyone's results.</p>
