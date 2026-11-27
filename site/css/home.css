@@ -102,6 +102,8 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
 .price-card{margin-top:40px;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:32px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015) 60%);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 30px 80px -40px rgba(0,0,0,.9);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
 .price-card .price{font-family:var(--heading);font-weight:600;font-size:clamp(3.4rem,8vw,5.4rem);letter-spacing:-.04em;line-height:1}
 .price-card .once{color:var(--muted);font-size:15px;margin-top:6px}
+.price-card .req{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:6px 12px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04);color:#d9cfd1;font-size:13px}
+.price-card .req::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red-hot)}
 .price-card .cta{justify-content:flex-start;margin-top:26px}
 .price-card ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;color:#d9cfd1}
 .price-card li{padding-left:22px;position:relative}
