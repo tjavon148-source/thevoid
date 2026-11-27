@@ -1,7 +1,7 @@
 /* Live demo: a replica of the journal's look, drawn from scratch with made-up data. */
 .demo-top{padding-block:56px 28px;background:radial-gradient(60% 120% at 0% 0%,rgba(255,255,255,.045),transparent 70%)}
 .demo-top .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between}
-.demo-top h1{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;font-variation-settings:"wdth" 82,"opsz" 96;letter-spacing:-.025em;max-width:16ch}
+.demo-top h1{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:600;letter-spacing:-.035em;max-width:16ch}
 .demo-top p{margin-top:12px;color:#d0c5c8;max-width:52ch}
 .demo-fine{margin:18px 0 72px;max-width:70ch}
 .sample-bar{display:flex;align-items:center;gap:12px;margin-bottom:12px;font-size:13px;color:var(--muted);flex-wrap:wrap}
