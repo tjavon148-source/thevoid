@@ -206,3 +206,6 @@ button.day{cursor:pointer}button.day:hover{border-color:#6a3640}button.day:focus
   .pad{grid-template-columns:repeat(3,58px)}.kbd{display:none}
 }
 @media (prefers-reduced-motion:reduce){.eq .line{transition:none;stroke-dashoffset:0}.dots.bad{animation:none}}
+
+/* glow behind the replica, matching the home device frame */
+.app{box-shadow:0 0 0 1px rgba(255,255,255,.04),0 60px 120px -50px #000,0 0 120px -40px rgba(224,16,42,.38)}

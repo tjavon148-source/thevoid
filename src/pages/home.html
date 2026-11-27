@@ -5,21 +5,23 @@
 
 {{header}}
 <main id="main">
+  <div class="hero-wrap" id="hero-wrap">
   <div class="hero" id="hero">
     <canvas id="hole" aria-hidden="true"></canvas>
     <div class="floats" aria-hidden="true">
       <div class="fl f1"><span class="chip" style="--dur:7s">win rate<b>63.0%</b><span class="up">17W</span> / <span class="dn">10L</span></span></div>
       <div class="fl f3"><span class="chip" style="--dur:8s;--dl:-2s">equity curve<svg width="148" height="46" viewBox="0 0 148 46" fill="none"><path d="M2 38 C14 36 20 40 32 34 S52 30 62 31 S82 22 92 20 S112 24 122 12 S138 6 146 5" stroke="#3ddc97" stroke-width="2"/><path d="M2 38 C14 36 20 40 32 34 S52 30 62 31 S82 22 92 20 S112 24 122 12 S138 6 146 5 L146 46 L2 46Z" fill="#3ddc97" opacity=".12"/></svg></span></div>
-      <div class="fl f2"><span class="chip" style="--dur:9s;--dl:-4s">Tue 12<b class="up">+$224</b>2 trades</span></div>
+      <div class="fl f2"><span class="chip" style="--dur:9s;--dl:-4s">Thu 12<b class="up">+$568</b>3 trades</span></div>
       <div class="fl f4"><span class="chip" style="--dur:6.5s;--dl:-1s">MNQ &middot; long<b class="up">+1.8R</b>breakout, tagged</span></div>
       <div class="fl f5"><span class="chip" style="--dur:8.5s;--dl:-3s">the vault<b>&bull;&bull;&bull;&bull;</b>PIN locked</span></div>
-      <div class="fl f6"><span class="chip" style="--dur:7.5s;--dl:-5s">Wed 13<b class="dn">&minus;$184</b><span class="cal" aria-hidden="true"><i class="g"></i><i class="G"></i><i class="r"></i><i class="G"></i><i class="g"></i><i></i><i></i></span></span></div>
+      <div class="fl f6"><span class="chip" style="--dur:7.5s;--dl:-5s">Tue 3<b class="dn">&minus;$184</b><span class="cal" aria-hidden="true"><i class="g"></i><i class="G"></i><i class="r"></i><i class="G"></i><i class="g"></i><i></i><i></i></span></span></div>
     </div>
     <div class="wrap">
       <h1 class="word" aria-label="The Void">
-        <span class="the" aria-hidden="true">the</span>
-        <span class="void" aria-hidden="true"><i>V</i><span class="o" id="o"></span><i>I</i><i>D</i></span>
+        <span class="the" aria-hidden="true"><span>the</span></span>
+        <span class="void" aria-hidden="true"><i class="lv"><span>V</span></i><span class="o" id="o"></span><i class="li"><span>I</span></i><i class="ld"><span>D</span></i></span>
       </h1>
+      <div class="hero-copy">
       <p class="tagline">The trading journal that lives on your chart.</p>
       <p class="built">Built for futures traders who chart on TradingView and trade on Tradovate.</p>
       <p class="lede">A Chrome extension for TradingView. Import your Tradovate orders, read your month at a glance, review your week, and keep private notes behind a PIN.</p>
@@ -28,23 +30,162 @@
         <a class="btn ghost" href="/demo/">Try the live demo</a>
       </div>
       <p class="fine">One-time payment. No subscription. Needs Chrome on a desktop or laptop. Your data stays in your own browser. Numbers shown are sample data.</p>
+      </div>
     </div>
     <span class="scrollhint" aria-hidden="true"></span>
   </div>
+  </div>
 
-  <section class="stage-sec" id="stage-sec">
-    <div class="sfl s1" aria-hidden="true"><span class="chip">profit factor<b>5.03</b>sample</span></div>
-    <div class="sfl s2" aria-hidden="true"><span class="chip">best day<b class="up">+$568</b>sample</span></div>
-    <div class="sfl s3" aria-hidden="true"><span class="chip">avg R<b>+1.28R</b>sample</span></div>
+  <section class="story" id="story" aria-labelledby="story-h">
+    <div class="wrap story-intro">
+      <p class="eyebrow">How it works</p>
+      <h2 class="head" id="story-h" data-reveal="words">Four moves. One journal.</h2>
+      <p class="sub" data-reveal>Import, review, find the pattern, lock what is private. Everything in this walkthrough is sample data.</p>
+    </div>
+    <div class="story-pin" id="story-pin">
+      <div class="story-stage wrap" id="story-stage">
+        <div class="rail" aria-hidden="true"><i class="rail-fill" id="rail-fill"></i></div>
+        <ol class="chapters" id="chapters">
+          <li class="ch" data-ch="0">
+            <div class="ch-copy">
+              <p class="eyebrow">01 &middot; Import</p>
+              <h3>Drop in your Tradovate orders.</h3>
+              <p>Export your Orders CSV from Tradovate and drop it in. Entries and exits are paired into trades for you.</p>
+            </div>
+            <div class="ch-screen" aria-hidden="true">
+              <div class="scr scr-import">
+                <div class="drop"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M4 20h16"/></svg><div><b>Orders.csv</b><span>Tradovate export &middot; 6 fills</span></div><em class="ok">Imported</em></div>
+                <div class="fills">
+                  <div class="fr fh"><span>Time</span><span>Side</span><span>Qty</span><span>Price</span></div>
+                  <div class="pair"><i class="bk"></i>
+                    <div class="fr"><span>09:34:08</span><span class="b">Buy</span><span>2</span><span>27,204.00</span></div>
+                    <div class="fr"><span>09:51:40</span><span class="s">Sell</span><span>2</span><span>27,282.00</span></div>
+                  </div>
+                  <div class="pair"><i class="bk"></i>
+                    <div class="fr"><span>10:12:15</span><span class="s">Sell</span><span>2</span><span>27,257.25</span></div>
+                    <div class="fr"><span>10:29:02</span><span class="b">Buy</span><span>2</span><span>27,207.75</span></div>
+                  </div>
+                  <div class="pair"><i class="bk"></i>
+                    <div class="fr"><span>10:41:33</span><span class="b">Buy</span><span>2</span><span>27,310.50</span></div>
+                    <div class="fr"><span>10:48:19</span><span class="s">Sell</span><span>2</span><span>27,325.00</span></div>
+                  </div>
+                </div>
+                <p class="paired"><span>Paired into 3 trades</span></p>
+                <div class="trows">
+                  <div class="tr"><span>09:34</span><span>Long 2 MNQZ6</span><b class="up" data-count="312" data-dec="2" data-sign>+$312.00</b></div>
+                  <div class="tr"><span>10:12</span><span>Short 2 MNQZ6</span><b class="up" data-count="198" data-dec="2" data-sign>+$198.00</b></div>
+                  <div class="tr"><span>10:41</span><span>Long 2 MNQZ6</span><b class="up" data-count="58" data-dec="2" data-sign>+$58.00</b></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="ch" data-ch="1">
+            <div class="ch-copy">
+              <p class="eyebrow">02 &middot; Review</p>
+              <h3>Review the day while it is fresh.</h3>
+              <p>Every trading day is a tile, colored by how the day ended. Open one, tag how each trade went, and write the note.</p>
+            </div>
+            <div class="ch-screen" aria-hidden="true">
+              <div class="scr scr-day">
+                <div class="mcal">
+                  <div class="cal-h"><b>Nov 2026</b><span>Monthly P/L <em class="up">+$1,748.00</em></span></div>
+                  <div class="cal-g">
+                    <span class="dw">Mo</span><span class="dw">Tu</span><span class="dw">We</span><span class="dw">Th</span><span class="dw">Fr</span>
+                    <span class="t g1"><i>2</i>+$58</span><span class="t r2"><i>3</i>−$184</span><span class="t g2"><i>4</i>+$112</span><span class="t g1"><i>5</i>+$56</span><span class="t g1"><i>6</i>+$84</span>
+                    <span class="t g2"><i>9</i>+$144</span><span class="t g2"><i>10</i>+$224</span><span class="t g1"><i>11</i>+$56</span><span class="t g3 sel"><i>12</i>+$568</span><span class="t g2"><i>13</i>+$108</span>
+                    <span class="t g1"><i>16</i>+$40</span><span class="t g2"><i>17</i>+$200</span><span class="t r1"><i>18</i>−$36</span><span class="t g3"><i>19</i>+$308</span><span class="t g1"><i>20</i>+$10</span>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-h"><b>Thu Nov 12</b><span>3 trades</span><em class="up" data-count="568" data-dec="2" data-sign>+$568.00</em></div>
+                  <div class="card-t"><span>09:34 &middot; Long 2</span><span>Breakout</span><b class="up">+$312.00</b></div>
+                  <p class="lbl">How did it go?</p>
+                  <div class="chips"><span class="tg on">Followed plan</span><span class="tg">Exited early</span><span class="tg">Moved stop</span></div>
+                  <p class="lbl">Notes</p>
+                  <p class="note" id="story-note">Waited for the retest and sized down. Followed the plan.</p>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="ch" data-ch="2">
+            <div class="ch-copy">
+              <p class="eyebrow">03 &middot; Patterns</p>
+              <h3>See your month, your curve, your setups.</h3>
+              <p>Net P&amp;L, win rate, profit factor and average R rebuild every time you import, and results break down by setup.</p>
+            </div>
+            <div class="ch-screen" aria-hidden="true">
+              <div class="scr scr-pat">
+                <div class="stats">
+                  <div class="st"><span>Total P&amp;L</span><b class="up" data-count="1748" data-dec="2" data-sign>+$1,748.00</b><em>27 trades</em></div>
+                  <div class="st"><span>Trade win %</span><b data-count="63" data-dec="1" data-suffix="%">63.0%</b><em>17W &middot; 10L</em></div>
+                  <div class="st"><span>Profit factor</span><b data-count="5.03" data-dec="2">5.03</b><em>win $ / loss $</em></div>
+                  <div class="st"><span>Best day</span><b class="up" data-count="568" data-dec="2" data-sign>+$568.00</b><em>Thu Nov 12</em></div>
+                </div>
+                <div class="eq">
+                  <p class="lbl">Equity curve</p>
+                  <svg viewBox="0 0 300 90" preserveAspectRatio="none"><defs><linearGradient id="eqf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3ddc97" stop-opacity=".28"/><stop offset="1" stop-color="#3ddc97" stop-opacity="0"/></linearGradient></defs><line class="zero" x1="0" x2="300" y1="74" y2="74"/><path class="area" fill="url(#eqf)" d=""/><path class="line" pathLength="1" d=""/></svg>
+                </div>
+                <div class="setups">
+                  <p class="lbl">By setup</p>
+                  <div class="su"><span>Breakout</span><i style="--w:1"></i><b>8 &middot; +$625</b></div>
+                  <div class="su"><span>Reversal</span><i style="--w:.69"></i><b>6 &middot; +$432</b></div>
+                  <div class="su"><span>Opening range</span><i style="--w:.62"></i><b>8 &middot; +$385</b></div>
+                  <div class="su"><span>Pullback</span><i style="--w:.49"></i><b>5 &middot; +$306</b></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="ch" data-ch="3">
+            <div class="ch-copy">
+              <p class="eyebrow">04 &middot; Vault</p>
+              <h3>Lock the private stuff.</h3>
+              <p>The Vault opens on a four-digit PIN and shows nothing from your journal. Your rules, playbooks and plans live there.</p>
+            </div>
+            <div class="ch-screen" aria-hidden="true">
+              <div class="scr scr-vault">
+                <div class="notes">
+                  <div class="nt pin"><b>My rules</b><span>Pinned</span></div>
+                  <div class="nt"><b>Setup playbook</b><span>Template</span></div>
+                  <div class="nt"><b>Pre-market plan</b><span>Template</span></div>
+                  <div class="nt"><b>Post-session review</b><span>Template</span></div>
+                </div>
+                <div class="lock">
+                  <svg class="lk" viewBox="0 0 48 48"><path class="shackle" d="M15 22v-6a9 9 0 0 1 18 0v6"/><rect x="10" y="22" width="28" height="20" rx="5"/><circle cx="24" cy="32" r="2.6"/></svg>
+                  <b>The Vault is locked</b>
+                  <div class="dots"><i></i><i></i><i></i><i></i></div>
+                  <div class="pad"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span></span><span>0</span><span></span></div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <div class="device" id="device" aria-hidden="true">
+          <div class="dv-bar"><i></i><i></i><i></i><span class="dv-url">MNQZ6 &middot; 5m &middot; sample chart</span></div>
+          <div class="dv-body">
+            <svg class="dv-chart" id="dv-chart" viewBox="0 0 800 460" preserveAspectRatio="none"></svg>
+            <div class="dv-panel" id="dv-panel">
+              <div class="dv-head">
+                <svg viewBox="0 0 1024 1024"><circle cx="512" cy="512" r="340" fill="none" stroke="#e0102a" stroke-width="64"/><path d="M313 140 L512 690 L711 140" fill="none" stroke="#f3eeee" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="dv-tabs"><b>Import</b><b>Review</b><b>Patterns</b><b>Vault</b></span>
+                <span class="pill">Sample data</span>
+              </div>
+              <div class="dv-screens" id="dv-screens"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage-sec showcase" id="stage-sec">
     <div class="wrap stage" id="stage">
       <div class="top">
-        <h2 class="head">Your whole month on one screen.</h2>
-        <p class="cap">Sample data</p>
+        <p class="eyebrow">The real screens &middot; sample data</p>
+        <h2 class="head" data-reveal="words">Your whole month on one screen.</h2>
       </div>
       <div class="frame">
         <div class="tilt" id="tilt">
           <div class="shot"><img src="/img/dashboard.webp" srcset="/img/dashboard-sm.webp 1080w, /img/dashboard.webp 2160w" sizes="(max-width: 899px) calc(100vw - 40px), 1080px" alt="The Void dashboard: monthly calendar of daily results, equity curve, win rate and profit factor" width="2160" height="1350">
-            <span class="hl h1"></span><span class="hl h2"></span><span class="hl h3"></span>
           </div>
         </div>
       </div>
@@ -59,7 +200,7 @@
   <section>
     <div class="wrap split">
       <div class="copy">
-        <h2 class="head">Every trade, with the numbers you actually review.</h2>
+        <h2 class="head" data-reveal="words">Every trade, with the numbers you actually review.</h2>
         <ul>
           <li>Import Tradovate order CSVs. Entries and exits are paired into trades for you.</li>
           <li>Stop, risk and R multiple are worked out from your orders, and you can override them.</li>
@@ -74,8 +215,11 @@
 
   <section class="demo-band">
     <div class="wrap">
-      <div><h2 class="head">Click around before you buy.</h2><p>The live demo is a replica running on sample data. Open a day, open a trade, switch between Today, Week and Month.</p></div>
+      <div class="demo-card glass">
+      <div class="dc-cal" aria-hidden="true"><i class="g1"></i><i class="r2"></i><i class="g2"></i><i class="g1"></i><i class="g1"></i><i class="g2"></i><i class="g2"></i><i class="g1"></i><i class="g3"></i><i class="g2"></i><i class="g1"></i><i class="g2"></i><i class="r1"></i><i class="g3"></i><i class="g1"></i></div>
+      <div><h2 class="head" data-reveal="words">Click around before you buy.</h2><p>The live demo is a replica running on sample data. Open a day, open a trade, switch between Today, Week and Month.</p></div>
       <a class="btn primary" href="/demo/">Open the live demo</a>
+      </div>
     </div>
   </section>
 
@@ -83,7 +227,7 @@
     <div class="wrap split flip">
       <div class="shot vault-shot t3d"><img src="/img/vault.webp" srcset="/img/vault-sm.webp 1080w, /img/vault.webp 2160w" sizes="(max-width: 880px) calc(100vw - 40px), 420px" alt="A Vault note with a setup playbook on the left and a chart screenshot on the right (sample data)" width="2160" height="1350" loading="lazy"></div>
       <div class="copy">
-        <h2 class="head">A private room next to your journal.</h2>
+        <h2 class="head" data-reveal="words">A private room next to your journal.</h2>
         <ul>
           <li>Opens on a four-digit PIN and shows nothing from your journal.</li>
           <li>Group folders into categories you can collapse.</li>
@@ -97,22 +241,23 @@
 
   <section class="toolbox">
     <div class="wrap">
-      <h2 class="head">The rest of the desk.</h2>
+      <h2 class="head" data-reveal="words">The rest of the desk.</h2>
       <dl>
-        <div class="row"><dt>Session clock</dt><dd>A big session clock with your trading windows, today's result, daily limits and a quick mood check-in.</dd></div>
-        <div class="row"><dt>Weekly reviews</dt><dd>Write the review, set one rule for next week, and watch your streak.</dd></div>
-        <div class="row"><dt>Checklist</dt><dd>A pre-trade checklist you tick through before you click.</dd></div>
-        <div class="row"><dt>Share cards</dt><dd>Turn a trade, a day, a week or a month into a clean image to post.</dd></div>
-        <div class="row"><dt>Accounts</dt><dd>Track several accounts side by side, each with its own results.</dd></div>
-        <div class="row"><dt>Backups</dt><dd>Save your journal to a folder on your computer and restore it any time.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path class="hand" d="M16 16V8"/><path d="M16 16l5 3"/></svg></span><dt>Session clock</dt><dd>A big session clock with your trading windows, today's result, daily limits and a quick mood check-in.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="6" y="5" width="20" height="23" rx="3"/><path class="ln" d="M10 12h12M10 17h12M10 22h7"/></svg></span><dt>Weekly reviews</dt><dd>Write the review, set one rule for next week, and watch your streak.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><path class="tick" d="M6 9l2.5 2.5L13 7M6 17l2.5 2.5L13 15M6 25l2.5 2.5L13 23"/><path d="M17 9h9M17 17h9M17 25h9"/></svg></span><dt>Checklist</dt><dd>A pre-trade checklist you tick through before you click.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><rect class="back" x="9" y="4" width="17" height="22" rx="3"/><rect x="5" y="8" width="17" height="22" rx="3"/><path d="M9 23l4-5 3 3 4-6"/></svg></span><dt>Share cards</dt><dd>Turn a trade, a day, a week or a month into a clean image to post.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="4" y="11" width="24" height="16" rx="3"/><path d="M12 11V8a2 2 0 012-2h4a2 2 0 012 2v3"/><path class="ln" d="M4 18h24"/></svg></span><dt>Accounts</dt><dd>Track several accounts side by side, each with its own results.</dd></div>
+        <div class="row glass"><span class="ti" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 9a2 2 0 012-2h7l3 3h10a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path class="arr" d="M16 22v-8M12 18l4 4 4-4"/></svg></span><dt>Backups</dt><dd>Save your journal to a folder on your computer and restore it any time.</dd></div>
       </dl>
     </div>
   </section>
 
   <section class="get" id="get">
     <div class="wrap">
-      <h2 class="head">How to get it.</h2>
-      <div class="price-card">
+      <h2 class="head" data-reveal="words">How to get it.</h2>
+      <div class="price-card glass">
+        <span class="ring" aria-hidden="true"></span>
         <div>
           <div class="price">$15</div>
           <p class="once">One time. No subscription.</p>
@@ -141,7 +286,7 @@
 
   <section style="padding-top:0">
     <div class="wrap">
-      <h2 class="head">Questions.</h2>
+      <h2 class="head" data-reveal="words">Questions.</h2>
       <div class="faq">
         <details><summary>What do I need to run it?</summary><p>Chrome on a desktop or laptop, a TradingView account, and Tradovate order exports. It does not run on phones or tablets, so buy and install from your computer, or come back to the page you land on after paying.</p></details>
         <details><summary>Does it place trades or give signals?</summary><p>No. It is a journal. It reads the order files you import and helps you review them. It never connects to your broker.</p></details>
@@ -162,4 +307,5 @@
 {{footer}}
 <script src="/js/site.js"></script>
 <script src="/js/hole.js"></script>
+<script src="/js/story.js" defer></script>
 <script src="/js/home.js" defer></script>

@@ -42,6 +42,13 @@
     });
   }
 
+  // cursor: layers shift with depth, and stars near the pointer are nudged aside and brighten (fine pointers only)
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches && !reduce;
+  let px = -9999, py = -9999, ox = 0, oy = 0, tox = 0, toy = 0;
+  if (fine) {
+    addEventListener("pointermove", e => { px = e.clientX; py = e.clientY; tox = px / W - .5; toy = py / H - .5; }, { passive: true });
+    document.addEventListener("pointerleave", () => { px = py = -9999; });
+  }
   let shoot = null, nextShoot = performance.now() + rnd(5000, 9000);
   function spawnShoot() {
     const fromLeft = Math.random() < 0.5, ang = rnd(0.35, 0.7);   // downward slant, radians
@@ -50,7 +57,7 @@
       vy: speed * Math.sin(ang), life: 0, max: rnd(0.7, 1.1), len: rnd(110, 190) };
   }
 
-  let last = performance.now(), sy = 0, raf = 0, lastDraw = 0;
+  let last = performance.now(), sy = 0, raf = 0, lastDraw = 0, running = false;
   const minGap = small ? 1000 / 30 : 0;   // phones: 30 fps is plenty for slow drift and saves battery
   function tick(now) { raf = 0; if (now - lastDraw >= minGap - 1) { lastDraw = now; frame(now); } else schedule(); }
   function schedule() { if (!raf && !document.hidden) raf = requestAnimationFrame(tick); }
@@ -59,13 +66,18 @@
     ctx.clearRect(0, 0, W, H);
     sy += ((window.scrollY || 0) - sy) * 0.08;   // eased scroll for a soft parallax
     const t = now / 1000;
+    ox += (tox - ox) * .04; oy += (toy - oy) * .04;
     for (const s of stars) {
       const L = LAYERS[s.li];
       if (!reduce) { s.x -= L.drift * dt; if (s.x < -2) { s.x = W + 2; s.y = rnd(0, H); } }
-      const y = (((s.y - sy * L.par) % H) + H) % H;
+      let x = s.x - ox * L.par * 220, y = (((s.y - sy * L.par - oy * L.par * 160) % H) + H) % H, glow = 0;
+      if (fine) {
+        const dx = x - px, dy = y - py, d2 = dx * dx + dy * dy;
+        if (d2 < 25600) { const d = Math.sqrt(d2) || 1, k = 1 - d / 160; glow = k; x += (dx / d) * k * 14; y += (dy / d) * k * 14; }
+      }
       const tw = reduce ? 1 : 0.65 + 0.35 * Math.sin(t * s.ts + s.tw);
-      ctx.fillStyle = `rgba(${s.rgb},${(L.a * tw).toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(s.x, y, s.r, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = `rgba(${s.rgb},${Math.min(1, L.a * tw + glow * .6).toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(x, y, s.r * (1 + glow * .6), 0, 6.2832); ctx.fill();
     }
     if (!reduce) {
       if (!shoot && now > nextShoot) spawnShoot();
@@ -82,12 +94,15 @@
         if (k >= 1 || shoot.x < -300 || shoot.x > W + 300 || shoot.y > H + 300) { shoot = null; nextShoot = now + rnd(9000, 20000); }
       }
     }
-    if (!reduce) schedule();
+    if (!reduce && running) schedule();
   }
 
   build();
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (reduce) frame(performance.now()); }, 150); });
-  if (reduce) frame(performance.now()); else schedule();
+  // one still frame right away; the drift starts once the page has loaded, so it never competes with first paint
+  frame(performance.now());
+  const start = () => { running = true; last = performance.now(); schedule(); };
+  if (!reduce) { if (document.readyState === "complete") start(); else addEventListener("load", start, { once: true }); }
   // stop completely while the tab is hidden, resume without a jump when it comes back
   document.addEventListener("visibilitychange", () => { if (reduce) return; if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else { last = performance.now(); schedule(); } });
 })();

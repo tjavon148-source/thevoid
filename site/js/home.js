@@ -1,9 +1,25 @@
-/* Home: floating panels (mouse + scroll parallax), dust, smooth scroll and the pinned dashboard story. */
+/* Home: sticky buy bar, hero parallax and the fall into the black hole, real-screenshot reveals.
+   Uses the motion engine (motion.js). Lenis smooth scroll loads only on wide screens with a fine pointer. */
 (function () {
-  const V = window.VOID, reduce = V.reduce;
-  const hero = document.getElementById("hero");
+  "use strict";
+  const V = window.VOID, M = window.M, reduce = V.reduce;
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+  const hero = document.getElementById("hero"), wrap = document.getElementById("hero-wrap");
 
-  /* mouse parallax for the floating panels */
+  /* sticky buy bar on phones: visible once the hero has scrolled away, hidden from just before the price section onwards */
+  const bar = document.getElementById("buybar"), get = document.getElementById("get");
+  if (bar && wrap && get && "IntersectionObserver" in window) {
+    let heroIn = true, nearGet = false;
+    const set = () => { const on = !heroIn && !nearGet; bar.classList.toggle("on", on); bar.inert = !on; };
+    bar.hidden = false; bar.inert = true;
+    new IntersectionObserver(([e]) => { heroIn = e.isIntersecting; set(); }, { rootMargin: "0px 0px -40% 0px" }).observe(wrap);
+    new IntersectionObserver(([e]) => { nearGet = e.isIntersecting || e.boundingClientRect.top < 0; set(); }, { rootMargin: "0px 0px 50% 0px" }).observe(get);
+  }
+
+  /* demo card tiles ripple diagonally */
+  $$(".dc-cal i").forEach((t, i) => t.style.setProperty("--k", (i % 5) + Math.floor(i / 5)));
+
+  /* mouse parallax for the floating sample panels */
   if (!reduce && V.fine && hero) {
     let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
     const step = () => { cx += (tx - cx) * .07; cy += (ty - cy) * .07; hero.style.setProperty("--px", cx.toFixed(3)); hero.style.setProperty("--py", cy.toFixed(3));
@@ -24,78 +40,61 @@
       floats.appendChild(d);
     }
   }
+  if (reduce || !M) return;
 
-  /* sticky buy bar on phones: visible once the hero has scrolled away, hidden from just before the price section onwards */
-  const bar = document.getElementById("buybar"), get = document.getElementById("get");
-  if (bar && hero && get && "IntersectionObserver" in window) {
-    let heroIn = true, nearGet = false;
-    const set = () => { const on = !heroIn && !nearGet; bar.classList.toggle("on", on); bar.inert = !on; };
-    bar.hidden = false; bar.inert = true;
-    new IntersectionObserver(([e]) => { heroIn = e.isIntersecting; set(); }, { rootMargin: "0px 0px -40% 0px" }).observe(hero);
-    // near = the price section is on screen, less than half a screen below it, or already scrolled past
-    new IntersectionObserver(([e]) => { nearGet = e.isIntersecting || e.boundingClientRect.top < 0; set(); }, { rootMargin: "0px 0px 50% 0px" }).observe(get);
+  /* ---------- falling in: the words are pulled into the O while the horizon grows over the screen ---------- */
+  let fall = null;
+  function buildFall() {
+    if (fall) { fall.kill(); fall = null; }
+    if (!hero || !wrap) return;
+    const wide = M.wide();
+    wrap.classList.toggle("falls", wide);
+    const o = $("#o").getBoundingClientRect(), ox = o.left + o.width / 2, oy = o.top + o.height / 2;
+    const toO = (el, s) => { const r = el.getBoundingClientRect(); return `translate(${(ox - (r.left + r.width / 2)).toFixed(1)}px, ${(oy - (r.top + r.height / 2)).toFixed(1)}px) scale(${s})`; };
+    const tl = new M.Timeline();
+    tl.to(".floats", [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(1.5)" }], 0, .45, "in")
+      .to(".scrollhint", [{ opacity: .7 }, { opacity: 0 }], 0, .1, "linear");
+    const copy = $(".hero-copy", hero);   // its children keep their CSS entrance; the wrapper is what gets pulled in
+    tl.to(copy, [{ transform: "none", opacity: 1 }, { transform: toO(copy, .12), opacity: 0 }], .02, .5, "in");
+    [".the", ".lv", ".li", ".ld"].forEach((s, i) => { const el = $(s, hero); tl.to(el, [{ transform: "none", opacity: 1 }, { transform: toO(el, .08), opacity: 0 }], .22 + i * .03, .62 + i * .03, "in"); });
+    tl.call(l => window.HOLE && window.HOLE.fall(wide ? l : l * .45), .18, wide ? .92 : 1, "in");
+    if (wide) tl.to("#hole", [{ opacity: 1 }, { opacity: 0 }], .86, 1, "linear");
+    fall = M.scene(wrap, tl, wide ? { mode: "pin", top: 62 } : { mode: "leave", top: 62 });
   }
 
-  function motion() {
-    if (reduce || !window.gsap || !window.ScrollTrigger) return;
-    const gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
-    gsap.registerPlugin(ScrollTrigger);
-    V.initLenis(l => { gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }, ScrollTrigger.update);
-
-    /* hero panels lift away at different speeds as you scroll */
-    gsap.utils.toArray(".fl").forEach(el => {
-      const d = parseFloat(getComputedStyle(el).getPropertyValue("--d")) || 1;
-      gsap.to(el, { "--sy": (-110 * d) + "px", ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
+  /* ---------- real screenshots: the dashboard tilts up into place; product rows open like a screen powering on ---------- */
+  let reveals = [];
+  function buildReveals() {
+    reveals.forEach(s => s && s.kill()); reveals = [];
+    if (!M.wide()) return;                                   // phones use the CSS scroll-driven focus-in
+    const stage = $(".stage");
+    if (stage) {
+      const tl = new M.Timeline()
+        .to("#tilt", [{ transform: "perspective(1400px) rotateX(24deg) scale(.86) translateY(60px)", opacity: .25 }, { transform: "none", opacity: 1 }], 0, 1, "inOut")
+        .stagger(".beats li", [{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "none" }], .55, .85, .08);
+      reveals.push(M.scene(stage, tl, { mode: "through", from: 1, to: .12 }));
+    }
+    $$(".split").forEach(row => {
+      const shot = $(".shot", row), img = shot && $("img", shot); if (!img) return;
+      const tl = new M.Timeline()
+        .to(shot, [{ opacity: 0 }, { opacity: 1 }], 0, .25, "linear")
+        .to(img, [{ clipPath: "inset(42% 14% 42% 14% round 10px)", transform: "scale(1.14) translateY(4%)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", transform: "none" }], .08, 1, "out")
+        .stagger($$(".copy li", row), [{ opacity: 0, transform: "translateX(-18px)" }, { opacity: 1, transform: "none" }], .2, .6, .08);
+      reveals.push(M.scene(row, tl, { mode: "through", from: .88, to: .3 }));
     });
-
-    const sec = document.getElementById("stage-sec"), tilt = document.getElementById("tilt");
-    const lis = gsap.utils.toArray("#beats li"), hls = gsap.utils.toArray(".hl"), sfl = gsap.utils.toArray(".sfl");
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 900px)", () => {
-      sec.classList.add("pin-on");
-      gsap.set(tilt, { transformPerspective: 1400, transformOrigin: "50% 65%", rotationX: 20, scale: 0.82, y: 40 });
-      gsap.set(lis, { autoAlpha: 0, y: 14 }); gsap.set(hls, { opacity: 0 }); gsap.set(sfl, { autoAlpha: 0, y: 60 });
-      const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: sec, start: "top top+=62", end: "+=2600", scrub: 0.6, pin: true, anticipatePin: 1, invalidateOnRefresh: true } });
-      tl.to(tilt, { rotationX: 0, scale: 1, y: 0, duration: 1.2, ease: "power2.out" });
-      tl.to(sfl, { autoAlpha: 1, y: 0, duration: 1, stagger: .15, ease: "power2.out" }, 0.2);
-      sfl.forEach((el, i) => tl.to(el, { y: (i % 2 ? 1 : -1) * 70, duration: 5.2, ease: "none" }, 1.2));
-      lis.forEach((li, i) => {
-        tl.to(li, { autoAlpha: 1, y: 0, duration: 0.35 }, ">-0.1").to(hls[i], { opacity: 1, duration: 0.35 }, "<")
-          .to({}, { duration: 0.7 })
-          .to(li, { autoAlpha: 0, y: -14, duration: 0.3 }).to(hls[i], { opacity: 0, duration: 0.3 }, "<");
-      });
-      return () => { sec.classList.remove("pin-on"); gsap.set([tilt, ...lis, ...hls, ...sfl], { clearProps: "all" }); };
-    });
-
-    /* Screenshot reveal: the frame fades up, then the picture opens from a soft centre slit
-       and settles from a slight zoom while the bullet points arrive. Scrubbed, so it follows the scroll exactly.
-       Only clip-path, transform and opacity are animated, on the image (the frame keeps its hover tilt and shadow). */
-    mm.add("(min-width: 900px)", () => {
-      const rows = gsap.utils.toArray(".split");
-      rows.forEach(row => {
-        const shot = row.querySelector(".shot"), img = shot && shot.querySelector("img"), items = row.querySelectorAll(".copy li");
-        if (!img) return;
-        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: row, start: "top 88%", end: "top 30%", scrub: 0.8 } });
-        tl.fromTo(shot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, 0)
-          .fromTo(img, { clipPath: "inset(42% 14% 42% 14% round 10px)", scale: 1.14, yPercent: 4 },
-                       { clipPath: "inset(0% 0% 0% 0% round 0px)", scale: 1, yPercent: 0, duration: 1, ease: "power2.out" }, 0.08)
-          .fromTo(items, { autoAlpha: 0, x: -18 }, { autoAlpha: 1, x: 0, duration: 0.5, stagger: 0.1, ease: "power2.out" }, 0.2);
-      });
-      return () => gsap.set(rows.flatMap(r => [...r.querySelectorAll(".shot, .shot img, .copy li")]), { clearProps: "all" });
-    });
-    window.addEventListener("load", () => ScrollTrigger.refresh());
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   }
-  /* GSAP, ScrollTrigger and Lenis are only needed for the pinned story on wide screens.
-     Phones and reduced-motion visitors never download them (about 160 KB). */
-  const wide = window.matchMedia("(min-width: 900px)");
-  let loading = false;
-  const script = src => new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
-  function loadMotion() {
-    if (loading || reduce || !wide.matches) return;
-    loading = true;
-    script("/vendor/gsap.min.js").then(() => Promise.all([script("/vendor/ScrollTrigger.min.js"), script("/vendor/lenis.min.js")])).then(motion).catch(() => {});
+
+  function lenis() {
+    if (!V.fine || !M.wide() || window.Lenis) return;
+    const s = document.createElement("script"); s.src = "/vendor/lenis.min.js";
+    s.onload = () => V.initLenis(null, M.request); document.head.appendChild(s);
   }
-  const start = () => { loadMotion(); wide.addEventListener("change", loadMotion); };
-  if (document.readyState === "complete") start(); else window.addEventListener("load", start);
+
+  /* build once the page has loaded, so positions are measured from rest */
+  let built = false;
+  const rebuild = () => { buildFall(); buildReveals(); M.request(); };
+  const build = () => { if (built) return; built = true; rebuild(); lenis(); };
+  if (document.readyState === "complete") build(); else window.addEventListener("load", build);
+  let rt, lastW = window.innerWidth;
+  window.addEventListener("resize", () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rt); rt = setTimeout(() => { if (built) { window.scrollTo(0, window.scrollY); rebuild(); lenis(); } }, 200); });
 })();

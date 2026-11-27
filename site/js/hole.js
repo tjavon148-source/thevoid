@@ -6,7 +6,7 @@
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const coarse=window.matchMedia("(pointer: coarse)").matches||window.innerWidth<700;
   const FS=`precision highp float;
-uniform vec2 uRes; uniform float uTime; uniform vec2 uC; uniform float uR; uniform float uOpen;
+uniform vec2 uRes; uniform float uTime; uniform vec2 uC; uniform float uR; uniform float uOpen; uniform vec2 uMouse; uniform float uFall;
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
   return mix(mix(hash(i), hash(i+vec2(1.,0.)), f.x), mix(hash(i+vec2(0.,1.)), hash(i+vec2(1.,1.)), f.x), f.y); }
@@ -52,8 +52,9 @@ void main(){
   col += vec3(0.16, 0.16, 0.2) * left * (0.28 + 0.55 * neb) * 0.04 * (0.55 + 0.45 * smoothstep(1.0, 0.2, abs(uv.y - 0.45) * 1.6));
   col += vec3(0.12, 0.12, 0.16) * smoothstep(0.55, 1.0, uv.x) * neb * 0.04;
   // stars (lensed)
-  col += starLayer(wpx, 38.0, 0.90, 1.0, 1.7) * 0.9;
-  col += starLayer(wpx + 400.0, 90.0, 0.90, 7.0, 2.6) * 1.3;
+  // two depths drift with the cursor, so the bending around the hole reads as real lensing
+  col += starLayer(wpx + uMouse * 0.45, 38.0, 0.90, 1.0, 1.7) * 0.9;
+  col += starLayer(wpx + 400.0 + uMouse * 1.1, 90.0, 0.90, 7.0, 2.6) * 1.3;
   // far side of the disc, bent over and under the hole by gravity
   if (r > 1.0) {
     float a2 = atan(p.y, p.x);
@@ -84,18 +85,18 @@ void main(){
   }
   // vignette and soft tone map
   float vg = smoothstep(1.35, 0.35, length((uv - vec2(0.5, 0.48)) * vec2(1.0, 1.15)));
-  col *= 0.55 + 0.45 * vg;
+  col *= (0.55 + 0.45 * vg) * (1.0 + uFall * 0.35);
   col = 1.0 - exp(-col * 1.35);
   col = pow(col, vec3(0.95));
   gl_FragColor = vec4(col, 1.0);
 }
 `;
-  let gl=null,prog=null,U={},run=false,visible=true,t0=performance.now(),openAt=null,W=0,H=0,dpr=1,cx=0,cy=0,R=100;
+  let gl=null,prog=null,U={},run=false,visible=true,t0=performance.now(),openAt=null,W=0,H=0,dpr=1,cx=0,cy=0,R=100,fall=0,mx=0,my=0,tx=0,ty=0;
   function initGL(){
     try{gl=canvas.getContext("webgl",{antialias:false,alpha:false,powerPreference:"high-performance"})||canvas.getContext("experimental-webgl")}catch(e){gl=null}
     if(!gl)return false;
     // Software-rendered WebGL (no GPU) would freeze the page, so use the drawn-ring fallback there.
-    try{const x=gl.getExtension("WEBGL_debug_renderer_info");if(x&&/swiftshader|llvmpipe|software/i.test(gl.getParameter(x.UNMASKED_RENDERER_WEBGL)))return false}catch(e){}
+    try{const x=gl.getExtension("WEBGL_debug_renderer_info");if(x&&!/[?&]gl=force\b/.test(location.search)&&/swiftshader|llvmpipe|software/i.test(gl.getParameter(x.UNMASKED_RENDERER_WEBGL)))return false}catch(e){}
     const sh=(type,s)=>{const o=gl.createShader(type);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(o));return null}return o};
     const vs=sh(gl.VERTEX_SHADER,"attribute vec2 a; void main(){ gl_Position = vec4(a, 0.0, 1.0); }");
     const fs=sh(gl.FRAGMENT_SHADER,FS);
@@ -106,7 +107,7 @@ void main(){
     const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
     const loc=gl.getAttribLocation(prog,"a");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-    ["uRes","uTime","uC","uR","uOpen"].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
+    ["uRes","uTime","uC","uR","uOpen","uMouse","uFall"].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
     return true;
   }
   function layout(){
@@ -125,7 +126,11 @@ void main(){
     if(!gl)return;
     const t=(now-t0)/1000;let open=1;
     if(!reduce){if(openAt===null)openAt=now;const k=Math.min(1,(now-openAt)/2600);open=1-Math.pow(1-k,3)}
-    gl.uniform2f(U.uRes,W,H);gl.uniform1f(U.uTime,reduce?3.0:t);gl.uniform2f(U.uC,cx,cy);gl.uniform1f(U.uR,R);gl.uniform1f(U.uOpen,open);
+    mx+=(tx-mx)*.05;my+=(ty-my)*.05;
+    // falling in: the horizon grows past the edges of the screen
+    const Rf=R*(1+22*Math.pow(fall,2.4));
+    gl.uniform2f(U.uRes,W,H);gl.uniform1f(U.uTime,reduce?3.0:t);gl.uniform2f(U.uC,cx,cy);gl.uniform1f(U.uR,Rf);gl.uniform1f(U.uOpen,open);
+    gl.uniform2f(U.uMouse,mx*46*dpr,-my*30*dpr);gl.uniform1f(U.uFall,fall);
     gl.drawArrays(gl.TRIANGLES,0,3);
   }
   function loop(now){if(!run)return;draw(now);requestAnimationFrame(loop)}
@@ -139,5 +144,8 @@ void main(){
     document.addEventListener("visibilitychange",()=>setRun(visible&&!document.hidden));
     canvas.addEventListener("webglcontextlost",e=>{e.preventDefault();root.classList.add("nogl");run=false});
     setRun(true);
-  }else{root.classList.add("nogl")}
+    if(!reduce&&window.matchMedia("(hover: hover) and (pointer: fine)").matches)window.addEventListener("pointermove",e=>{tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5},{passive:true});
+  }else{gl=null;root.classList.add("nogl")}
+  // used by home.js while scrolling out of the hero (0 = resting, 1 = fallen in)
+  window.HOLE={fall(v){fall=v;if(gl&&!run)draw(performance.now())},ok:()=>!!gl};
 })();
