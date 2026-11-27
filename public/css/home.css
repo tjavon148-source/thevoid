@@ -143,3 +143,12 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
   .buybar .btn{flex:none;padding:11px 18px}
 }
 @media (prefers-reduced-motion:reduce){.buybar,.buybar.on{transition:none}}
+
+/* phones: close-ups and screenshots rise into focus as they scroll in. CSS scroll-driven, no JS;
+   browsers without support, and reduced motion, simply show them. */
+@supports (animation-timeline: view()) {
+  @media (max-width:899px) and (prefers-reduced-motion:no-preference) {
+    .zoom, .split .shot { animation: focus-in linear both; animation-timeline: view(); animation-range: entry 5% cover 38%; }
+    @keyframes focus-in { from { opacity: 0; transform: translateY(48px) scale(.94); } to { opacity: 1; transform: none; } }
+  }
+}

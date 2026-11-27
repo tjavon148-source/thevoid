@@ -66,6 +66,23 @@
       });
       return () => { sec.classList.remove("pin-on"); gsap.set([tilt, ...lis, ...hls, ...sfl], { clearProps: "all" }); };
     });
+
+    /* Screenshot reveal: the frame fades up, then the picture opens from a soft centre slit
+       and settles from a slight zoom while the bullet points arrive. Scrubbed, so it follows the scroll exactly.
+       Only clip-path, transform and opacity are animated, on the image (the frame keeps its hover tilt and shadow). */
+    mm.add("(min-width: 900px)", () => {
+      const rows = gsap.utils.toArray(".split");
+      rows.forEach(row => {
+        const shot = row.querySelector(".shot"), img = shot && shot.querySelector("img"), items = row.querySelectorAll(".copy li");
+        if (!img) return;
+        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: row, start: "top 88%", end: "top 30%", scrub: 0.8 } });
+        tl.fromTo(shot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, 0)
+          .fromTo(img, { clipPath: "inset(42% 14% 42% 14% round 10px)", scale: 1.14, yPercent: 4 },
+                       { clipPath: "inset(0% 0% 0% 0% round 0px)", scale: 1, yPercent: 0, duration: 1, ease: "power2.out" }, 0.08)
+          .fromTo(items, { autoAlpha: 0, x: -18 }, { autoAlpha: 1, x: 0, duration: 0.5, stagger: 0.1, ease: "power2.out" }, 0.2);
+      });
+      return () => gsap.set(rows.flatMap(r => [...r.querySelectorAll(".shot, .shot img, .copy li")]), { clearProps: "all" });
+    });
     window.addEventListener("load", () => ScrollTrigger.refresh());
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
   }
