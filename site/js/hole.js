@@ -45,12 +45,12 @@ void main(){
   vec2 src = p - p / max(r * r, 0.0001) * 0.9 * uOpen;
   vec2 wpx = uC + src * uR;
   vec2 uv = frag / uRes;
-  vec3 col = vec3(0.020, 0.010, 0.014);
+  vec3 col = vec3(0.012, 0.012, 0.013);
   // red nebula on the left, thin one on the right
   float neb = fbm(wpx / 520.0 + vec2(0.0, uTime * 0.01));
   float left = smoothstep(0.75, 0.0, uv.x);
-  col += vec3(0.16, 0.16, 0.2) * left * (0.28 + 0.55 * neb) * 0.35 * (0.55 + 0.45 * smoothstep(1.0, 0.2, abs(uv.y - 0.45) * 1.6));
-  col += vec3(0.12, 0.12, 0.16) * smoothstep(0.55, 1.0, uv.x) * neb * 0.3;
+  col += vec3(0.16, 0.16, 0.2) * left * (0.28 + 0.55 * neb) * 0.04 * (0.55 + 0.45 * smoothstep(1.0, 0.2, abs(uv.y - 0.45) * 1.6));
+  col += vec3(0.12, 0.12, 0.16) * smoothstep(0.55, 1.0, uv.x) * neb * 0.04;
   // stars (lensed)
   col += starLayer(wpx, 38.0, 0.90, 1.0, 1.7) * 0.9;
   col += starLayer(wpx + 400.0, 90.0, 0.90, 7.0, 2.6) * 1.3;
