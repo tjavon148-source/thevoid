@@ -10,6 +10,7 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
 .hero .lede{margin:16px auto 0;max-width:36em;color:#d9cfd1;font-size:1.08rem;text-shadow:0 1px 18px #000}
 .cta{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 .hero .fine{text-shadow:0 1px 14px #000}
+.hero .built{margin:14px auto 0;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--muted);max-width:62em;text-wrap:balance;text-shadow:0 1px 14px #000}
 .scrollhint{position:absolute;left:50%;bottom:18px;width:1px;height:38px;background:linear-gradient(var(--red-hot),transparent);opacity:.7;z-index:2}
 .nogl .o{border-radius:50%;box-shadow:0 0 0 .05em var(--red),0 0 .5em .1em rgba(224,16,42,.55),inset 0 0 .3em #000;background:#000;width:.7em;margin-inline:.05em}
 .nogl .hero{background:radial-gradient(60% 70% at 50% 40%,rgba(255,255,255,.05),transparent 70%),var(--bg)}
@@ -17,7 +18,7 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
   .void i{display:inline-block;font-style:normal;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
   .void i:nth-child(1){animation-delay:.35s}.void i:nth-child(3){animation-delay:.5s}.void i:nth-child(4){animation-delay:.65s}
   .the,.tagline,.hero .lede,.cta,.hero .fine{animation:fade 1.2s ease both}
-  .the{animation-delay:.2s}.tagline{animation-delay:.9s}.hero .lede{animation-delay:1.05s}.cta{animation-delay:1.2s}.hero .fine{animation-delay:1.3s}
+  .the{animation-delay:.2s}.tagline{animation-delay:.9s}.hero .built{animation:fade 1.2s ease .98s both}.hero .lede{animation-delay:1.05s}.cta{animation-delay:1.2s}.hero .fine{animation-delay:1.3s}
   .scrollhint{animation:hint 2.4s ease-in-out 2s infinite}
   @keyframes rise{from{opacity:0;filter:blur(14px);transform:translateY(.12em) scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -124,3 +125,21 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
   .steps{grid-template-columns:minmax(0,1fr)}
   h1.word .void{font-size:30vw}
 }
+
+/* phone close-ups under each dashboard beat (hidden on wide screens, where the pinned dashboard does the job) */
+.zoom{display:none}
+@media (max-width:899px){.zoom{display:block;width:100%;height:auto;margin-top:16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 60px -28px rgba(0,0,0,.9)}}
+.shot picture{display:block}
+
+/* sticky buy bar: phones only, shown between the hero and the price section (home.js) */
+.buybar{display:none}
+@media (max-width:899px){
+  .buybar{display:flex;position:fixed;z-index:25;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 50px -12px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06);transform:translateY(calc(100% + 28px));opacity:0;visibility:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .25s ease,visibility 0s linear .35s}
+  .buybar.on{transform:none;opacity:1;visibility:visible;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .25s ease,visibility 0s}
+  .buybar[hidden]{display:none}
+  .bb-copy{display:grid;line-height:1.25;min-width:0}
+  .bb-copy b{font-size:15px;font-weight:600}
+  .bb-copy span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .buybar .btn{flex:none;padding:11px 18px}
+}
+@media (prefers-reduced-motion:reduce){.buybar,.buybar.on{transition:none}}

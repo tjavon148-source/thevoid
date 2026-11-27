@@ -25,6 +25,17 @@
     }
   }
 
+  /* sticky buy bar on phones: visible once the hero has scrolled away, hidden from just before the price section onwards */
+  const bar = document.getElementById("buybar"), get = document.getElementById("get");
+  if (bar && hero && get && "IntersectionObserver" in window) {
+    let heroIn = true, nearGet = false;
+    const set = () => { const on = !heroIn && !nearGet; bar.classList.toggle("on", on); bar.inert = !on; };
+    bar.hidden = false; bar.inert = true;
+    new IntersectionObserver(([e]) => { heroIn = e.isIntersecting; set(); }, { rootMargin: "0px 0px -40% 0px" }).observe(hero);
+    // near = the price section is on screen, less than half a screen below it, or already scrolled past
+    new IntersectionObserver(([e]) => { nearGet = e.isIntersecting || e.boundingClientRect.top < 0; set(); }, { rootMargin: "0px 0px 50% 0px" }).observe(get);
+  }
+
   function motion() {
     if (reduce || !window.gsap || !window.ScrollTrigger) return;
     const gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;

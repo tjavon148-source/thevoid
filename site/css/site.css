@@ -70,6 +70,7 @@ section{padding-block:88px;position:relative}
 .prose{padding-block:56px 96px;max-width:760px}
 .prose h2{font-size:1.7rem;font-weight:600;margin:48px 0 12px}
 .prose h3{font-size:1.2rem;margin:28px 0 8px}
+.prose .when{margin-top:-4px;font-family:var(--mono);font-size:13px;color:var(--muted)}
 .prose p,.prose li{color:#d9cfd1}
 .prose p+p{margin-top:14px}
 .prose ul,.prose ol{padding-left:1.2em;display:grid;gap:8px;margin:12px 0}

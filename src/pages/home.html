@@ -21,6 +21,7 @@
         <span class="void" aria-hidden="true"><i>V</i><span class="o" id="o"></span><i>I</i><i>D</i></span>
       </h1>
       <p class="tagline">The trading journal that lives on your chart.</p>
+      <p class="built">Built for futures traders who chart on TradingView and trade on Tradovate.</p>
       <p class="lede">A Chrome extension for TradingView. Import your Tradovate orders, read your month at a glance, review your week, and keep private notes behind a PIN.</p>
       <div class="cta">
         <a class="btn primary js-buy" href="#get">Get The Void &middot; $15</a>
@@ -42,15 +43,15 @@
       </div>
       <div class="frame">
         <div class="tilt" id="tilt">
-          <div class="shot"><img src="/img/dashboard.webp" alt="The Void dashboard: monthly calendar of daily results, equity curve, win rate and profit factor" width="2160" height="1350">
+          <div class="shot"><img src="/img/dashboard.webp" srcset="/img/dashboard-sm.webp 1080w, /img/dashboard.webp 2160w" sizes="(max-width: 899px) calc(100vw - 40px), 1080px" alt="The Void dashboard: monthly calendar of daily results, equity curve, win rate and profit factor" width="2160" height="1350">
             <span class="hl h1"></span><span class="hl h2"></span><span class="hl h3"></span>
           </div>
         </div>
       </div>
       <ol class="beats" id="beats">
-        <li><span class="tag">1 of 3</span><h3>The numbers</h3><p>Net P&amp;L, win rate, profit factor and average R. They rebuild every time you import.</p></li>
-        <li><span class="tag">2 of 3</span><h3>Your month</h3><p>Every trading day is a tile, colored by how the day ended.</p></li>
-        <li><span class="tag">3 of 3</span><h3>Your curve</h3><p>The equity curve of your account, so a drawdown never sneaks up on you.</p></li>
+        <li><span class="tag">1 of 3</span><h3>The numbers</h3><p>Net P&amp;L, win rate, profit factor and average R. They rebuild every time you import.</p><img class="zoom" src="/img/zoom-stats.webp" alt="Close-up of the stat cards: total P&amp;L, trade win rate, day win rate and profit factor (sample data)" width="1170" height="321" loading="lazy" decoding="async"></li>
+        <li><span class="tag">2 of 3</span><h3>Your month</h3><p>Every trading day is a tile, colored by how the day ended.</p><img class="zoom" src="/img/zoom-calendar.webp" alt="Close-up of the month calendar with each day colored by its result and weekly totals (sample data)" width="952" height="550" loading="lazy" decoding="async"></li>
+        <li><span class="tag">3 of 3</span><h3>Your curve</h3><p>The equity curve of your account, so a drawdown never sneaks up on you.</p><img class="zoom" src="/img/zoom-curve.webp" alt="Close-up of the equity curve card (sample data)" width="792" height="340" loading="lazy" decoding="async"></li>
       </ol>
     </div>
   </section>
@@ -67,7 +68,7 @@
           <li>Attach screenshots or a recap video to any trade, or link one.</li>
         </ul>
       </div>
-      <div class="shot t3d"><img src="/img/trade-detail.webp" alt="A trade open in The Void with net P&amp;L, R multiple, stop and target, and review notes" width="2160" height="1350" loading="lazy"></div>
+      <div class="shot t3d"><picture><source media="(max-width: 640px)" srcset="/img/zoom-trade.webp" width="626" height="894"><img src="/img/trade-detail.webp" srcset="/img/trade-detail-sm.webp 1080w, /img/trade-detail.webp 2160w" sizes="(max-width: 880px) calc(100vw - 40px), 620px" alt="A trade open in The Void with net P&amp;L, hold time, setup, review tags and notes (sample data)" width="2160" height="1350" loading="lazy" decoding="async"></picture></div>
     </div>
   </section>
 
@@ -80,7 +81,7 @@
 
   <section>
     <div class="wrap split flip">
-      <div class="shot vault-shot t3d"><img src="/img/vault.webp" alt="A Vault note with a setup playbook on the left and a chart screenshot on the right (sample data)" width="2160" height="1350" loading="lazy"></div>
+      <div class="shot vault-shot t3d"><img src="/img/vault.webp" srcset="/img/vault-sm.webp 1080w, /img/vault.webp 2160w" sizes="(max-width: 880px) calc(100vw - 40px), 420px" alt="A Vault note with a setup playbook on the left and a chart screenshot on the right (sample data)" width="2160" height="1350" loading="lazy"></div>
       <div class="copy">
         <h2 class="head">A private room next to your journal.</h2>
         <ul>
@@ -153,6 +154,10 @@
       </div>
     </div>
   </section>
+  <div class="buybar" id="buybar" hidden>
+    <div class="bb-copy"><b>The Void &middot; $15</b><span>One time. Desktop Chrome.</span></div>
+    <a class="btn primary small js-buy" href="#get">Get it &middot; $15</a>
+  </div>
 </main>
 {{footer}}
 <script src="/js/site.js"></script>
