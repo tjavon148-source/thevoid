@@ -29,7 +29,7 @@
     W = innerWidth; H = innerHeight;
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const total = Math.min(small ? 110 : 260, Math.round((W * H) / (small ? 7000 : 5500)));
+    const total = Math.min(small ? 130 : 340, Math.round((W * H) / (small ? 7000 : 5500)));
     const sum = LAYERS.reduce((s, l) => s + l.n, 0);
     stars = [];
     LAYERS.forEach((L, li) => {

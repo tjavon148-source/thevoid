@@ -1,5 +1,5 @@
 /* Home: the O in VOID is an empty box with a live black hole behind it; sample-data panels drift around it. */
-.hero{position:relative;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--line);background:var(--bg);min-height:calc(100svh - var(--nav));display:grid;align-items:center}
+.hero{position:relative;overflow:hidden;isolation:isolate;background:var(--bg);min-height:calc(100svh - var(--nav));display:grid;align-items:center}
 #hole{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block}
 .hero .wrap{width:100%;padding-block:56px 64px;text-align:center;position:relative;z-index:2}
 h1.word{font-family:var(--display);display:flex;flex-direction:column;align-items:center;font-weight:800;font-variation-settings:"wdth" 75,"opsz" 96}
@@ -50,7 +50,7 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
 @media (max-width:520px){.hero .wrap{padding-block:110px 64px}.f1{top:2%}.f3{top:3%}.chip{font-size:11px}.chip b{font-size:16px}.f1 .chip{transform:scale(.9);transform-origin:left top}.f3 .chip{transform:scale(.9);transform-origin:right top}}
 
 /* pinned dashboard */
-.stage-sec{padding-block:84px 40px;background:radial-gradient(70% 55% at 50% 100%,rgba(255,255,255,.04),transparent 70%);position:relative;overflow:hidden}
+.stage-sec{padding-block:84px 40px;;position:relative;overflow:hidden}
 .stage{display:grid;gap:28px;justify-items:center}
 .stage .top{text-align:center}
 .stage .top .head{margin-inline:auto}
@@ -62,13 +62,13 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
 .hl.h2{left:15.4%;top:36.4%;width:44.1%;height:53.8%}
 .hl.h3{left:60.35%;top:36.4%;width:36.7%;height:24.6%}
 .beats{list-style:none;margin:0;padding:0;width:100%;max-width:1120px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
-.beats li{border-top:1px solid var(--line);padding-top:16px}
+.beats li{border-top:1px solid;border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.16) 50%,transparent) 1;padding-top:16px}
 .beats h3{font-size:1.3rem;font-weight:600;margin-bottom:6px}
 .beats p{color:#d0c5c8;font-size:16px;max-width:34ch}
 .sfl{position:absolute;z-index:3;pointer-events:none;display:none}
 .pin-on .sfl{display:block}
 .sfl.s1{left:3%;top:40%}.sfl.s2{right:3%;top:62%}.sfl.s3{left:8%;bottom:30%}
-.pin-on.stage-sec{padding-block:0;background:radial-gradient(70% 55% at 50% 100%,rgba(255,255,255,.04),transparent 70%)}
+.pin-on.stage-sec{padding-block:0;}
 .pin-on .stage{height:calc(100svh - var(--nav));grid-template-rows:auto minmax(0,1fr) auto;align-content:center;gap:18px;padding-block:22px 18px}
 .pin-on .stage .top .head{font-size:clamp(1.6rem,3vw,2.4rem);max-width:none}
 .pin-on .frame{display:grid;place-items:center;min-height:0}
@@ -94,19 +94,19 @@ h1.word .o{display:inline-block;width:.8em;height:.7em;margin-inline:.02em;verti
 .demo-band p{color:#d0c5c8;max-width:44ch;margin-top:12px}
 
 .toolbox dl{margin:44px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:64px}
-.toolbox .row{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:18px;padding-block:20px;border-top:1px solid var(--line)}
+.toolbox .row{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:18px;padding-block:20px;border-top:1px solid;border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.16) 50%,transparent) 1}
 .toolbox dt{font-family:var(--heading);font-weight:600;font-size:1.1rem;letter-spacing:-.01em}
 .toolbox dd{margin:0;color:#cfc4c7}
 
-.get{background:radial-gradient(60% 80% at 80% 0%,rgba(255,255,255,.04),transparent 70%)}
-.price-card{margin-top:40px;border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:32px;background:linear-gradient(180deg,rgba(20,20,24,.7),rgba(9,9,11,.7));display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.get{}
+.price-card{margin-top:40px;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:32px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015) 60%);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 30px 80px -40px rgba(0,0,0,.9);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
 .price-card .price{font-family:var(--heading);font-weight:600;font-size:clamp(3.4rem,8vw,5.4rem);letter-spacing:-.04em;line-height:1}
 .price-card .once{color:var(--muted);font-size:15px;margin-top:6px}
 .price-card .cta{justify-content:flex-start;margin-top:26px}
 .price-card ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;color:#d9cfd1}
 .price-card li{padding-left:22px;position:relative}
 .price-card li::before{content:"";position:absolute;left:0;top:.7em;width:9px;height:2px;background:#6e6a70}
-.steps{margin:56px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:s;border-top:1px solid var(--line)}
+.steps{margin:56px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:s;border-top:1px solid;border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.16) 50%,transparent) 1}
 .steps li{counter-increment:s;padding:26px 24px 8px 0;color:#d9cfd1}
 .steps li::before{content:counter(s);font-family:var(--heading);font-weight:500;font-size:2.4rem;color:#5d5a62;display:block;line-height:1;margin-bottom:12px}
 .steps strong{display:block;color:var(--ink);font-family:var(--heading);font-weight:600;font-size:1.15rem;margin-bottom:6px;letter-spacing:-.01em}
